@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.ubbcluj.emotion</groupId>
+		<artifactId>project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>edu.ubbcluj.emotion</groupId>
+	<artifactId>database</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<packaging>bundle</packaging>
+	<name>database</name>
+
+	<properties>
+		<maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
+		<karaf.dir>c:\apache-karaf-3.0.1\instances\emotion\deploy\</karaf.dir>
+	</properties>
+
+	<dependencies>
+
+		<!-- Common -->
+		<dependency>
+			<groupId>edu.ubbcluj.emotion</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.5.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.31</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${maven-bundle-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-RequiredExecutionEnviroment>JavaSE-1.7</Bundle-RequiredExecutionEnviroment>
+						<Bundle-Activator>edu.ubbcluj.emotion.FileDatabaseActivator</Bundle-Activator>
+						<Require-Bundle>common</Require-Bundle>
+						<Import-Package>*;resolution:=optional</Import-Package>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${karaf.dir}">
+									<fileset dir="${basedir}/target" includes="*.jar" />
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

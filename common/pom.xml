@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.ubbcluj.emotion</groupId>
+		<artifactId>project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>edu.ubbcluj.emotion</groupId>
+	<artifactId>common</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<packaging>bundle</packaging>
+	<name>common</name>
+
+	<properties>
+		<maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
+		<karaf.dir>c:\apache-karaf-3.0.1\instances\emotion\deploy\</karaf.dir>
+	</properties>
+
+	<dependencies>
+
+		<!-- OpenIMAJ -->
+		<dependency>
+			<artifactId>image-processing</artifactId>
+			<groupId>org.openimaj</groupId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>javassist</artifactId>
+					<groupId>javassist</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Include newer javassist -->
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.18.1-GA</version>
+		</dependency>
+
+
+		<!-- Conja -->
+		<dependency>
+			<groupId>com.davidsoergel</groupId>
+			<artifactId>conja</artifactId>
+			<version>1.051</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${maven-bundle-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-RequiredExecutionEnviroment>JavaSE-1.7</Bundle-RequiredExecutionEnviroment>
+						<Export-Package>edu.ubbcluj.emotion.model,
+							edu.ubbcluj.emotion.info,
+							edu.ubbcluj.emotion.loader,
+							edu.ubbcluj.emotion.manager,
+							edu.ubbcluj.emotion.util
+						</Export-Package>
+						<Import-Package>COM.jrockit.reflect;resolution:=optional</Import-Package>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${karaf.dir}">
+									<fileset dir="${basedir}/target" includes="*.jar" />
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
