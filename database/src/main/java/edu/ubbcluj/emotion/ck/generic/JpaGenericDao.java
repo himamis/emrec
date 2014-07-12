@@ -13,15 +13,15 @@ public class JpaGenericDao<T, PK extends Serializable> implements GenericDao<T, 
 	protected EntityManager	entityManager;
 
 	@SuppressWarnings("unchecked")
-	public JpaGenericDao() {
+	public JpaGenericDao(String database) {
 		ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
 		this.entityClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
-		entityManager = JpaUtil.getEntityManager();
+		entityManager = JpaUtil.getEntityManager(database);
 	}
 
-	public JpaGenericDao(Class<T> clazz) {
+	public JpaGenericDao(String database, Class<T> clazz) {
 		this.entityClass = clazz;
-		entityManager = JpaUtil.getEntityManager();
+		entityManager = JpaUtil.getEntityManager(database);
 	}
 
 	@Override

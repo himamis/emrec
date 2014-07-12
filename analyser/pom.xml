@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>edu.ubbcluj.emotion</groupId>
+		<artifactId>project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>edu.ubbcluj.emotion</groupId>
+	<artifactId>analyser</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<!-- FastICA from local repository -->
+		<dependency>
+			<artifactId>fastica</artifactId>
+			<groupId>org.fastica</groupId>
+			<version>1.11</version>
+		</dependency>
+
+		<!-- OpenImaj -->
+		<dependency>
+			<artifactId>image-processing</artifactId>
+			<groupId>org.openimaj</groupId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jama</artifactId>
+					<groupId>jama</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Excluded Jama -->
+		<dependency>
+			<groupId>gov.nist.math</groupId>
+			<artifactId>jama</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+
+		<dependency>
+			<artifactId>image-feature-extraction</artifactId>
+			<groupId>org.openimaj</groupId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Common -->
+		<dependency>
+			<groupId>edu.ubbcluj.emotion</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.ubbcluj.emotion</groupId>
+			<artifactId>database</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- JBlas -->
+		<dependency>
+			<groupId>org.jblas</groupId>
+			<artifactId>jblas</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
+		
+
+	</dependencies>
+</project>

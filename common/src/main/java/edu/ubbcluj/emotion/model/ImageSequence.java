@@ -54,6 +54,10 @@ public class ImageSequence implements Iterable<Image>, Serializable {
 		return images.get(index);
 	}
 
+	public void set(int index, Image element) {
+		images.set(index, element);
+	}
+
 	public int size() {
 		return images.size();
 	}

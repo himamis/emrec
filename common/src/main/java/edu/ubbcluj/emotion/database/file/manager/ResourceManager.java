@@ -15,27 +15,29 @@ import edu.ubbcluj.emotion.model.Subject;
 
 public class ResourceManager {
 
-	public static final int						LANDMARKS			= 1;
-	public static final int						EMOTION				= 2;
-	public static final int						ACTION_UNITS		= 4;
-	public static final int						IMAGE_SEQUENCE		= 8;
-	public static final int						ALL					= 15;
+	public static boolean							USE_CACHE			= true;
 
-	private final String						folder;
+	public static final int							LANDMARKS			= 1;
+	public static final int							EMOTION				= 2;
+	public static final int							ACTION_UNITS		= 4;
+	public static final int							IMAGE_SEQUENCE		= 8;
+	public static final int							ALL					= 15;
 
-	private final ActionUnitListManager			actionUnitListManager;
-	private final EmotionManager				emotionManager;
-	private final LandmarksManager				landmarksManager;
-	private final ImageSequenceManager			imageSequenceManager;
+	private final String							folder;
 
-	private final ResourceInformationService	resInfoService;
+	private final ActionUnitListManager				actionUnitListManager;
+	private final EmotionManager					emotionManager;
+	private final LandmarksManager					landmarksManager;
+	private final ImageSequenceManager				imageSequenceManager;
 
-	private final Map<String, ImageSequence>	imageSequenceCache	= new HashMap<>();
-	private final Map<String, Emotion>			emotionCache		= new HashMap<>();
-	private final Map<String, LandmarksSequence>		landmarksCache		= new HashMap<>();
-	private final Map<String, ActionUnitList>	actionUnitListCache	= new HashMap<>();
-	private final Map<String, Sequence>			sequenceCache		= new HashMap<>();
-	private final Map<String, Subject>			subjectCache		= new HashMap<>();
+	private final ResourceInformationService		resInfoService;
+
+	private final Map<String, ImageSequence>		imageSequenceCache	= new HashMap<>();
+	private final Map<String, Emotion>				emotionCache		= new HashMap<>();
+	private final Map<String, LandmarksSequence>	landmarksCache		= new HashMap<>();
+	private final Map<String, ActionUnitList>		actionUnitListCache	= new HashMap<>();
+	private final Map<String, Sequence>				sequenceCache		= new HashMap<>();
+	private final Map<String, Subject>				subjectCache		= new HashMap<>();
 
 	public ResourceManager(final String folder, final ActionUnitListManager actionUnitListManager, final EmotionManager emotionManager,
 			final LandmarksManager landmarksManager, final ImageSequenceManager imageSequenceManager, final ResourceInformationService resInfoService) {
@@ -53,9 +55,13 @@ public class ResourceManager {
 
 	public Subject loadSubject(final String subject, final int flags) {
 		Subject subj = null;
-		if ((subj = subjectCache.get(subject)) == null) {
+		if (USE_CACHE) {
+			if ((subj = subjectCache.get(subject)) == null) {
+				subj = new Subject(subject);
+				subjectCache.put(subject, subj);
+			}
+		} else {
 			subj = new Subject(subject);
-			subjectCache.put(subject, subj);
 		}
 		final String[] sequences = resInfoService.getSequences(folder, subject);
 		final List<Sequence> sequenceList = new ArrayList<>();
@@ -75,9 +81,13 @@ public class ResourceManager {
 		final String key = createKey(subject, sequence);
 		Sequence seq = null;
 
-		if ((seq = sequenceCache.get(key)) == null) {
+		if (USE_CACHE) {
+			if ((seq = sequenceCache.get(key)) == null) {
+				seq = new Sequence(sequence);
+				sequenceCache.put(key, seq);
+			}
+		} else {
 			seq = new Sequence(sequence);
-			sequenceCache.put(key, seq);
 		}
 		if ((flags & LANDMARKS) != 0 && seq.getLandmarksSequence() == null) {
 			final LandmarksSequence landmarks = loadLandmarks(subject, sequence);
@@ -102,9 +112,13 @@ public class ResourceManager {
 	public ImageSequence loadImageSequence(final String subject, final String sequence) {
 		final String key = createKey(subject, sequence);
 		ImageSequence imageSequence = null;
-		if ((imageSequence = imageSequenceCache.get(key)) == null) {
+		if (USE_CACHE) {
+			if ((imageSequence = imageSequenceCache.get(key)) == null) {
+				imageSequence = imageSequenceManager.loadImageSequence(folder, subject, sequence);
+				imageSequenceCache.put(key, imageSequence);
+			}
+		} else {
 			imageSequence = imageSequenceManager.loadImageSequence(folder, subject, sequence);
-			imageSequenceCache.put(key, imageSequence);
 		}
 		return imageSequence;
 	}
@@ -112,9 +126,13 @@ public class ResourceManager {
 	public Emotion loadEmotion(final String subject, final String sequence) {
 		final String key = createKey(subject, sequence);
 		Emotion emotion = null;
-		if ((emotion = emotionCache.get(key)) == null) {
+		if (USE_CACHE) {
+			if ((emotion = emotionCache.get(key)) == null) {
+				emotion = emotionManager.loadEmotion(folder, subject, sequence);
+				emotionCache.put(key, emotion);
+			}
+		} else {
 			emotion = emotionManager.loadEmotion(folder, subject, sequence);
-			emotionCache.put(key, emotion);
 		}
 		return emotion;
 	}
@@ -122,9 +140,13 @@ public class ResourceManager {
 	public LandmarksSequence loadLandmarks(final String subject, final String sequence) {
 		final String key = createKey(subject, sequence);
 		LandmarksSequence landmarks = null;
-		if ((landmarks = landmarksCache.get(key)) == null) {
+		if (USE_CACHE) {
+			if ((landmarks = landmarksCache.get(key)) == null) {
+				landmarks = landmarksManager.loadLandmarks(folder, subject, sequence);
+				landmarksCache.put(key, landmarks);
+			}
+		} else {
 			landmarks = landmarksManager.loadLandmarks(folder, subject, sequence);
-			landmarksCache.put(key, landmarks);
 		}
 		return landmarks;
 	}
@@ -132,9 +154,13 @@ public class ResourceManager {
 	public ActionUnitList loadActionUnitList(final String subject, final String sequence) {
 		final String key = createKey(subject, sequence);
 		ActionUnitList actionUnitList = null;
-		if ((actionUnitList = actionUnitListCache.get(key)) == null) {
+		if (USE_CACHE) {
+			if ((actionUnitList = actionUnitListCache.get(key)) == null) {
+				actionUnitList = actionUnitListManager.loadActionUnitList(folder, subject, sequence);
+				actionUnitListCache.put(key, actionUnitList);
+			}
+		} else {
 			actionUnitList = actionUnitListManager.loadActionUnitList(folder, subject, sequence);
-			actionUnitListCache.put(key, actionUnitList);
 		}
 		return actionUnitList;
 	}

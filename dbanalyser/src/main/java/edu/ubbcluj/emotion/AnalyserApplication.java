@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
 import edu.ubbcluj.emotion.model.Emotion;
+import edu.ubbcluj.emotion.test.OpenImajTest;
 import edu.ubbcluj.emotion.test.Test;
 import edu.ubbcluj.emotion.test.halftraining.ShortestLengthTest;
 import edu.ubbcluj.emotion.util.Constants;
@@ -32,13 +33,13 @@ public class AnalyserApplication {
 
 		final ResourceLoaderFactory resourceLoaderFactory = new FileResourceLoaderFactory();
 
-		Test test = new ShortestLengthTest();
-		double[] result = test.run(resourceLoaderFactory, "openimaj_diff", 20);
+		Test test = new OpenImajTest();
+		double[] result = test.run(resourceLoaderFactory, "openimaj_folder", 5);
 
-		for (int i = 0; i < result.length; i++) {
+		/*for (int i = 0; i < result.length; i++) {
 			
 			debug("Emotion " + Emotion.values()[i] + " recognised in " + result[i] * 100 + "%");
-		}
+		}*/
 	}
 
 	private static void initLogger() {

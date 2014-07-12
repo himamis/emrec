@@ -1,5 +1,12 @@
 package edu.ubbcluj.emotion.recognition.pca.trainingdata;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.openimaj.data.dataset.ListBackedDataset;
+
 import edu.ubbcluj.emotion.database.file.loader.ImageFilter;
 import edu.ubbcluj.emotion.database.file.loader.ImageFilterAdapter;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;

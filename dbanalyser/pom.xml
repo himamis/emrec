@@ -36,6 +36,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<artifactId>image-feature-extraction</artifactId>
+			<groupId>org.openimaj</groupId>
+			<version>1.2.1</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- JBlas -->
 		<dependency>
 			<groupId>org.jblas</groupId>

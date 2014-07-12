@@ -3,18 +3,14 @@ package edu.ubbcluj.emotion.pca;
 import static edu.ubbcluj.emotion.util.Math.calculateRowMeanValues;
 import static edu.ubbcluj.emotion.util.Math.normalizeVector;
 import static edu.ubbcluj.emotion.util.Math.subFromRowsP;
-import static edu.ubbcluj.emotion.util.Math.subVectorP;
 
 import org.fastica.math.Matrix;
 import org.jblas.DoubleMatrix;
 import org.jblas.Eigen;
-import org.openimaj.feature.DoubleFV;
-import org.openimaj.feature.FeatureExtractor;
 
-import edu.ubbcluj.emotion.pca.util.QuickSortDualPivot;
-import edu.ubbcluj.emotion.util.HasDescription;
+import edu.ubbcluj.emotion.util.QuickSortDualPivot;
 
-public class PCA implements HasDescription, FeatureExtractor<DoubleFV, double[]> {
+public class PCA {
 
 	private double[]	meanValues;
 	private double[]	eigenValues;
@@ -30,17 +26,16 @@ public class PCA implements HasDescription, FeatureExtractor<DoubleFV, double[]>
 	 *            contains the data in rows
 	 */
 	public PCA(double[][] inVectors) {
-		double[][] copyOfInVectors = Matrix.clone(inVectors);
-		meanValues = calculateRowMeanValues(copyOfInVectors);
-		subFromRowsP(copyOfInVectors, meanValues);
-		vectorsZeroMean = copyOfInVectors;
+		double[][] data = Matrix.clone(inVectors);
+		
+		centerData(inVectors);
 
-		DoubleMatrix A = new DoubleMatrix(copyOfInVectors);
+		DoubleMatrix A = new DoubleMatrix(data);
 		DoubleMatrix I = A.transpose();
 
 		DoubleMatrix AT = I;
 
-		DoubleMatrix C = A.mmul(AT).muli(1.0 / copyOfInVectors[0].length);
+		DoubleMatrix C = A.mmul(AT).muli(1.0 / data[0].length);
 
 		final DoubleMatrix[] a = Eigen.symmetricEigenvectors(C);
 		eigenValues = new double[a[1].columns];
@@ -63,6 +58,11 @@ public class PCA implements HasDescription, FeatureExtractor<DoubleFV, double[]>
 		for (int i = 0; i < eigenVectors.length; i++) {
 			normalizeVector(eigenVectors[i]);
 		}
+	}
+	
+	private void centerData(double[][] matrix) {
+		meanValues = calculateRowMeanValues(matrix);
+		subFromRowsP(matrix, meanValues);
 	}
 
 	/**
@@ -95,24 +95,5 @@ public class PCA implements HasDescription, FeatureExtractor<DoubleFV, double[]>
 	public double[][] getVectorsZeroMean() {
 		return vectorsZeroMean;
 	}
-
-	@Override
-	public String getDescription() {
-		return "Algorithm: PCA (Principal Component Analisys)";
-	}
-
-	@Override
-	public DoubleFV extractFeature(double[] data) {
-		double[][] transposed = new double[data.length][1];
-		for (int i = 0; i < data.length; i++) {
-			transposed[i][0] = data[i];
-		}
-		double[][] meanSubtracted = subVectorP(transposed, meanValues);
-		double[][] projection = Matrix.mult(eigenVectors, meanSubtracted);
-		double[] ret = new double[projection.length];
-		for (int i = 0; i < ret.length; i++) {
-			ret[i] = projection[i][0];
-		}
-		return new DoubleFV(ret);
-	}
+	
 }

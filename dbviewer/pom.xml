@@ -12,7 +12,7 @@
 	<artifactId>dbviewer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<packaging>bundle</packaging>
+	<packaging>jar</packaging>
 	<name>dbviewer</name>
 
 	<properties>
@@ -38,46 +38,18 @@
 
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>${maven-bundle-plugin.version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
-						<Bundle-RequiredExecutionEnviroment>JavaSE-1.7</Bundle-RequiredExecutionEnviroment>
-						<Bundle-Activator>edu.ubbcluj.emotion.ViewerActivator</Bundle-Activator>
-						<Require-Bundle>common</Require-Bundle>
-						<Import-Package>edu.ubbcluj.emotion.model,
-							*;resolution:=optional</Import-Package>
-						<Embed-Transitive>true</Embed-Transitive>
-						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
-					</instructions>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<configuration>
-							<tasks>
-								<copy todir="${karaf.dir}">
-									<fileset dir="${basedir}/target" includes="*.jar" />
-								</copy>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<!-- build> <plugins> <plugin> <groupId>org.apache.felix</groupId> <artifactId>maven-bundle-plugin</artifactId> 
+		<version>${maven-bundle-plugin.version}</version> <extensions>true</extensions> 
+		<configuration> <instructions> <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName> 
+		<Bundle-Version>${project.version}</Bundle-Version> <Bundle-RequiredExecutionEnviroment>JavaSE-1.7</Bundle-RequiredExecutionEnviroment> 
+		<Bundle-Activator>edu.ubbcluj.emotion.ViewerActivator</Bundle-Activator> 
+		<Require-Bundle>common</Require-Bundle> <Import-Package>edu.ubbcluj.emotion.model, 
+		*;resolution:=optional</Import-Package> <Embed-Transitive>true</Embed-Transitive> 
+		<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency> </instructions> 
+		</configuration> </plugin> <plugin> <artifactId>maven-antrun-plugin</artifactId> 
+		<version>1.4</version> <executions> <execution> <phase>package</phase> <configuration> 
+		<tasks> <copy todir="${karaf.dir}"> <fileset dir="${basedir}/target" includes="*.jar" 
+		/> </copy> </tasks> </configuration> <goals> <goal>run</goal> </goals> </execution> 
+		</executions> </plugin> </plugins> </build -->
+
 </project>

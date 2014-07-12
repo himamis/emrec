@@ -25,4 +25,27 @@
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
+	
+	<persistence-unit name="emotion.original"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>edu.ubbcluj.emotion.model.ActionUnit</class>
+		<class>edu.ubbcluj.emotion.model.ActionUnitList</class>
+		<class>edu.ubbcluj.emotion.model.Image</class>
+		<class>edu.ubbcluj.emotion.model.ImageSequence</class>
+		<class>edu.ubbcluj.emotion.model.Landmarks</class>
+		<class>edu.ubbcluj.emotion.model.LandmarksSequence</class>
+		<class>edu.ubbcluj.emotion.model.Point2D</class>
+		<class>edu.ubbcluj.emotion.model.Sequence</class>
+		<class>edu.ubbcluj.emotion.model.Subject</class>
+
+		<properties>
+			<!-- property name="hibernate.cache.provider_class" value="org.hibernate.cache.EhCache" 
+				/ -->
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://127.0.0.1:3306/emotionoriginal" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+		</properties>
+	</persistence-unit>
 </persistence>

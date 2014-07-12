@@ -58,6 +58,13 @@
 			<artifactId>common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>edu.ubbcluj.emotion</groupId>
+			<artifactId>database</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 

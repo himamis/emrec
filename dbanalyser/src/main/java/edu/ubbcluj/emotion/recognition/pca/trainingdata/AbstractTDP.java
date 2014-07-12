@@ -4,6 +4,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openimaj.data.dataset.GroupedDataset;
+import org.openimaj.data.dataset.ListBackedDataset;
+import org.openimaj.data.dataset.ListDataset;
+import org.openimaj.data.dataset.MapBackedDataset;
+
 import edu.ubbcluj.emotion.database.file.loader.ImageFilter;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
@@ -18,6 +23,8 @@ public abstract class AbstractTDP implements EmotionTDP, HasDescription {
 	private double[][]				trainingData;
 	private List<BufferedImage>		trainingImages;
 	private List<BufferedImage>[]	trainingImagesByEmotion;
+	private List<List<double[]>>	trainingDataByEmotionList;
+	private List<double[]>			trainingDataList;
 
 	public AbstractTDP() {
 		throw new RuntimeException("Implicit constructor not allowed");
@@ -83,10 +90,46 @@ public abstract class AbstractTDP implements EmotionTDP, HasDescription {
 		}
 		return trainingImagesByEmotion;
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return "Data Provider: ";
+	}
+
+	private List<List<double[]>> getTrainingDataByEmotionList() {
+		if (trainingDataByEmotionList == null) {
+			double[][][] data = getTrainingDataByEmotion();
+			trainingDataByEmotionList = new ArrayList<List<double[]>>();
+			for (int i = 0; i < data.length; i++) {
+				List<double[]> td = new ArrayList<double[]>();
+				for (int j = 0; j < data[i].length; j++) {
+					td.add(data[i][j]);
+				}
+				trainingDataByEmotionList.add(td);
+			}
+		}
+		return trainingDataByEmotionList;
+	}
+
+	private List<double[]> getTrainingDataList() {
+		if (trainingDataList == null) {
+			trainingDataList = new ArrayList<double[]>();
+			double[][] data = getTrainingData();
+			for (int i = 0; i < data.length; i++) {
+				trainingDataList.add(data[i]);
+			}
+		}
+		return trainingDataList;
+	}
+
+	@Override
+	public GroupedDataset<Emotion, ListDataset<double[]>, double[]> getGroupedDataset() {
+		GroupedDataset<Emotion, ListDataset<double[]>, double[]> gds = new MapBackedDataset<Emotion, ListDataset<double[]>, double[]>();
+		List<List<double[]>> trainingDataList = getTrainingDataByEmotionList();
+		for (int i = 0; i < trainingDataList.size(); i++) {
+			gds.put(Emotion.values()[i], new ListBackedDataset<double[]>(trainingDataList.get(i)));
+		}
+		return gds;
 	}
 
 	protected abstract ImageFilter getImageFilter(Emotion emotion);

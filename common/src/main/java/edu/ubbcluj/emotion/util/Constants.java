@@ -31,7 +31,7 @@ public abstract class Constants {
 	
 	public static final int[] MOUTHRIGHT = {48};
 	public static final int[] MOUTHLEFT = {54};
-	public static final int[] MOUTHCENTER = {66, 62};
+	public static final int[] MOUTHCENTER = {62, 66};
 	
 	public static final int[] CEYELEFTCENTER = {42, 43, 44, 45, 46, 47};
 	public static final int[] CEYERIGHTCENTER = {36, 37, 38, 39, 40, 41};

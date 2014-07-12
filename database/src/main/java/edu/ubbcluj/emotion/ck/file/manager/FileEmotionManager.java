@@ -18,11 +18,16 @@ public class FileEmotionManager implements EmotionManager {
 
 	@Override
 	public Emotion loadEmotion(final String folder, final String subject, final String sequence) {
-		final int lastIndex = resInfo.getSequenceLength(Constants.ORIGINAL_FOLDER, subject, sequence);
-		final String name = StringUtil.buildEmotionFolderName(Constants.ORIGINAL_FOLDER).concat(StringUtil.buildSubjectFolder(subject))
-				.concat(StringUtil.buildSequenceFolder(sequence)).concat(StringUtil.buildFileName(subject, sequence, lastIndex))
-				.concat(Constants.EMOTION_FILE);
-		final File f = new File(name);
+		final String baseFolder = StringUtil.buildEmotionFolderName(Constants.ORIGINAL_FOLDER).concat(StringUtil.buildSubjectFolder(subject))
+				.concat(StringUtil.buildSequenceFolder(sequence));
+		String name = resInfo.getEmotion(folder, subject, sequence);
+		if (name == null) {
+			// throw new
+			// ResourceManagerException("No action unit found for subject " +
+			// subject + " sequence " + sequence);
+			return null;
+		}
+		final File f = new File(baseFolder.concat(name));
 		Emotion emotion = null;
 
 		try (Scanner scanner = new Scanner(f)) {

@@ -21,11 +21,13 @@ public class FileActionUnitListManager implements ActionUnitListManager {
 
 	@Override
 	public ActionUnitList loadActionUnitList(final String folder, final String subject, final String sequence) {
-		final int lastIndex = resInfo.getSequenceLength(Constants.ORIGINAL_FOLDER, subject, sequence);
-		final String name = StringUtil.buildActionUnitsFolderName(Constants.ORIGINAL_FOLDER).concat(StringUtil.buildSubjectFolder(subject))
-				.concat(StringUtil.buildSequenceFolder(sequence)).concat(StringUtil.buildFileName(subject, sequence, lastIndex))
-				.concat(Constants.FACS_FILE);
-		final File f = new File(name);
+		final String baseFolder = StringUtil.buildActionUnitsFolderName(Constants.ORIGINAL_FOLDER).concat(StringUtil.buildSubjectFolder(subject))
+				.concat(StringUtil.buildSequenceFolder(sequence));
+		String name = resInfo.getActionUnitList(folder, subject, sequence);
+		if (name == null) {
+			throw new ResourceManagerException("No action unit found for subject " + subject + " sequence " + sequence);
+		}
+		final File f = new File(baseFolder.concat(name));
 		final List<ActionUnit> aulist = new ArrayList<>();
 
 		try (Scanner scanner = new Scanner(f)) {

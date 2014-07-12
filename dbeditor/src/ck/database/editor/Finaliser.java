@@ -8,6 +8,7 @@ import org.fastica.math.Matrix;
 import org.fastica.math.Vector;
 
 import edu.ubbcluj.emotion.util.ImageUtil;
+import static edu.ubbcluj.emotion.util.Math.*;
 
 public class Finaliser {
 
@@ -20,13 +21,17 @@ public class Finaliser {
 			}
 		}
 
-		/*
-		 * for (int i = 0; i < imagesDouble.length; i++) { double min =
-		 * min(imagesDouble[i]); for (int j = 0; j < imagesDouble[i].length;
-		 * j++) { imagesDouble[i][j] += min; } double max =
-		 * max(imagesDouble[i]); double scale = 255.0 / max; for (int j = 0; j <
-		 * imagesDouble[i].length; j++) { imagesDouble[i][j] *= scale; } }
-		 */
+		for (int i = 0; i < imagesDouble.length; i++) {
+			double min = min(imagesDouble[i]);
+			for (int j = 0; j < imagesDouble[i].length; j++) {
+				imagesDouble[i][j] += min;
+			}
+			double max = max(imagesDouble[i]);
+			double scale = 255.0 / max;
+			for (int j = 0; j < imagesDouble[i].length; j++) {
+				imagesDouble[i][j] *= scale;
+			}
+		}
 
 		BufferedImage img = images.get(0);
 		int h = img.getHeight();

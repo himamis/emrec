@@ -42,12 +42,18 @@ public class FileResourceInformationService implements ResourceInformationServic
 
 	@Override
 	public String getEmotion(String folder, String subject, String sequence) {
-		return null;
+		final String emotionFolder = StringUtil.buildEmotionFolderName(Constants.ORIGINAL_FOLDER).concat(StringUtil.buildSubjectFolder(subject))
+				.concat(StringUtil.buildSequenceFolder(sequence));
+		final String[] files = listFileNames(emotionFolder);
+		return files != null && files.length > 0 ? files[0] : null;
 	}
 
 	@Override
 	public String getActionUnitList(String folder, String subject, String sequence) {
-		return null;
+		final String actionUnitFolder = StringUtil.buildActionUnitsFolderName(Constants.ORIGINAL_FOLDER).concat(StringUtil.buildSubjectFolder(subject))
+				.concat(StringUtil.buildSequenceFolder(sequence));
+		final String[] files = listFileNames(actionUnitFolder);
+		return  files != null && files.length > 0 ? files[0] : null;
 	}
 
 	@Override
