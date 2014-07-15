@@ -5,12 +5,13 @@ import java.util.List;
 
 import org.openimaj.data.dataset.Dataset;
 import org.openimaj.data.dataset.GroupedDataset;
+import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.feature.DoubleFV;
 import org.openimaj.feature.FeatureExtractor;
 
 public class DataUtil {
 
-	public static <KEY, INSTANCE> double[][] getMatrixData(GroupedDataset<KEY, Dataset<INSTANCE>, INSTANCE> groupedDataset,
+	public static <KEY, INSTANCE> double[][] getMatrixData(GroupedDataset<KEY, ListDataset<INSTANCE>, INSTANCE> groupedDataset,
 			FeatureExtractor<DoubleFV, INSTANCE> featureExtractor) {
 		List<Dataset<INSTANCE>> datasetList = new ArrayList<>();
 		int n = 0;

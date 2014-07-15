@@ -14,6 +14,13 @@
 
 	<packaging>jar</packaging>
 
+	<repositories>
+		<repository>
+			<id>neil_rubens-repository</id>
+			<url>https://bitbucket.org/neil_rubens/rapidminer_maven-repo/raw/master/repository/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<!-- FastICA from local repository -->
 		<dependency>
@@ -35,7 +42,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<!-- Excluded Jama -->
 		<dependency>
 			<groupId>gov.nist.math</groupId>
@@ -70,7 +77,13 @@
 			<version>1.2.3</version>
 		</dependency>
 
-		
+
+		<dependency>
+			<groupId>com.rapid_i</groupId>
+			<artifactId>rapidminer</artifactId>
+			<version>5.3.013</version>
+		</dependency>
+
 
 	</dependencies>
 </project>

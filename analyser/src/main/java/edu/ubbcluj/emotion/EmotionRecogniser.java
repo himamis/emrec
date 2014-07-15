@@ -20,20 +20,17 @@ public class EmotionRecogniser implements Annotator<FImage, Emotion> {
 
 	@Override
 	public ClassificationResult<Emotion> classify(FImage object) {
-		// TODO Auto-generated method stub
-		return null;
+		return internalAnnotator.classify(object);
 	}
 
 	@Override
 	public Set<Emotion> getAnnotations() {
-		// TODO Auto-generated method stub
-		return null;
+		return internalAnnotator.getAnnotations();
 	}
 
 	@Override
 	public List<ScoredAnnotation<Emotion>> annotate(FImage object) {
-		// TODO Auto-generated method stub
-		return null;
+		return internalAnnotator.annotate(object);
 	}
 
 }
