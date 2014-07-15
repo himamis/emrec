@@ -19,7 +19,7 @@ import javax.swing.event.ChangeListener;
 import edu.ubbcluj.emotion.model.ImageSequence;
 import edu.ubbcluj.emotion.model.Landmarks;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
-import edu.ubbcluj.emotion.model.Point2D;
+import edu.ubbcluj.emotion.model.MyPoint2D;
 import edu.ubbcluj.emotion.model.Sequence;
 import edu.ubbcluj.emotion.util.Constants;
 
@@ -109,7 +109,7 @@ public class Canvas extends JPanel {
 				g.setColor(Color.RED);
 				Landmarks l = landmarks.get(i);
 				if (showOnly) {
-					Point2D fl = l.get(showIndex);
+					MyPoint2D fl = l.get(showIndex);
 					Integer x = ((Float) fl.getX()).intValue();
 					Integer y = ((Float) fl.getY()).intValue();
 					g.fillOval(x, y, 2, 2);
@@ -118,7 +118,7 @@ public class Canvas extends JPanel {
 					g.fillOval((int) mc[0], (int) mc[1], 2, 2);
 				} else {
 					for (int i = 0; i < l.size(); i++) {
-						Point2D fl = l.get(i);
+						MyPoint2D fl = l.get(i);
 						Integer x = ((Float) fl.getX()).intValue();
 						Integer y = ((Float) fl.getY()).intValue();
 						g.fillOval(x, y, 2, 2);

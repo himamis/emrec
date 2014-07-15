@@ -3,11 +3,10 @@ package edu.ubbcluj.emotion.editor;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 import edu.ubbcluj.emotion.model.Image;
 import edu.ubbcluj.emotion.model.Landmarks;
-import edu.ubbcluj.emotion.model.Point2D;
+import edu.ubbcluj.emotion.model.MyPoint2D;
 import edu.ubbcluj.emotion.model.Sequence;
 
 public class SequenceResizer implements SequenceEditor {
@@ -37,7 +36,7 @@ public class SequenceResizer implements SequenceEditor {
 		BufferedImage resizedImage = op.filter(bufferedImage, null);
 		image.setBufferedImage(resizedImage);
 		if (landmarks != null) {
-			for (Point2D point : landmarks) {
+			for (MyPoint2D point : landmarks) {
 				java.awt.geom.Point2D.Float dest = new java.awt.geom.Point2D.Float();
 				op.getPoint2D(point.toPoint2D(), dest);
 				point.fromPoint2D(dest);

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "point2d")
-public class Point2D implements Serializable {
+public class MyPoint2D implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -25,10 +25,10 @@ public class Point2D implements Serializable {
 	@Column(name = "y")
 	private float				y;
 
-	public Point2D() {
+	public MyPoint2D() {
 	}
 
-	public Point2D(float x, float y) {
+	public MyPoint2D(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}

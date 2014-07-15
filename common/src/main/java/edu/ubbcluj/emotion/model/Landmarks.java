@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "landmarks")
-public class Landmarks implements Iterable<Point2D>, Serializable {
+public class Landmarks implements Iterable<MyPoint2D>, Serializable {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -29,12 +29,12 @@ public class Landmarks implements Iterable<Point2D>, Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "landmarks_point2ds", joinColumns = @JoinColumn(name = "landmarks_id"), inverseJoinColumns = @JoinColumn(name = "point2d_id"))
-	private List<Point2D>		landmarks;
+	private List<MyPoint2D>		landmarks;
 
 	public Landmarks() {
 	}
 
-	public Landmarks(List<Point2D> landmarks) {
+	public Landmarks(List<MyPoint2D> landmarks) {
 		this.landmarks = landmarks;
 	}
 
@@ -46,16 +46,16 @@ public class Landmarks implements Iterable<Point2D>, Serializable {
 		this.id = id;
 	}
 
-	public List<Point2D> getLandmarks() {
+	public List<MyPoint2D> getLandmarks() {
 		return landmarks;
 	}
 
-	public void setLandmarks(List<Point2D> landmarks) {
+	public void setLandmarks(List<MyPoint2D> landmarks) {
 		this.landmarks = landmarks;
 	}
 
 	@Override
-	public Iterator<Point2D> iterator() {
+	public Iterator<MyPoint2D> iterator() {
 		return landmarks.iterator();
 	}
 
@@ -64,7 +64,7 @@ public class Landmarks implements Iterable<Point2D>, Serializable {
 	}
 
 	@Transient
-	public Point2D get(int index) {
+	public MyPoint2D get(int index) {
 		return landmarks.get(index);
 	}
 

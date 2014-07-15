@@ -14,7 +14,7 @@ import edu.ubbcluj.emotion.model.Image;
 import edu.ubbcluj.emotion.model.ImageSequence;
 import edu.ubbcluj.emotion.model.Landmarks;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
-import edu.ubbcluj.emotion.model.Point2D;
+import edu.ubbcluj.emotion.model.MyPoint2D;
 import edu.ubbcluj.emotion.model.Sequence;
 
 public class OpenImajUtil {
@@ -163,7 +163,7 @@ public class OpenImajUtil {
 		float maxx = 0, maxy = 0;
 		float minx = 500, miny = 500;
 
-		for (Point2D fl : landmarks) {
+		for (MyPoint2D fl : landmarks) {
 			float x = fl.getX();
 			float y = fl.getY();
 			if (x > maxx) {

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import edu.ubbcluj.emotion.model.Image;
 import edu.ubbcluj.emotion.model.Landmarks;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
-import edu.ubbcluj.emotion.model.Point2D;
+import edu.ubbcluj.emotion.model.MyPoint2D;
 import edu.ubbcluj.emotion.model.Sequence;
 
 public class ImageCropper implements SequenceEditor {
@@ -24,7 +24,7 @@ public class ImageCropper implements SequenceEditor {
 		miny = 500;
 
 		for (Landmarks ls : landmarksSequence) {
-			for (Point2D fl : ls) {
+			for (MyPoint2D fl : ls) {
 				float x = fl.getX();
 				float y = fl.getY();
 				if (x > maxx) {
@@ -56,7 +56,7 @@ public class ImageCropper implements SequenceEditor {
 		float maxy = this.maxy > image.getHeight() ? image.getHeight() : this.maxy;
 		BufferedImage editedImage = image.getBufferedImage().getSubimage((int) minx, (int) miny, (int) (maxx - minx), (int) (maxy - miny));
 		image.setBufferedImage(editedImage);
-		for (Point2D point : landmarks) {
+		for (MyPoint2D point : landmarks) {
 			point.setX(point.getX() - minx);
 			point.setY(point.getY() - miny);
 		}

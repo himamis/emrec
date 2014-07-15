@@ -19,7 +19,7 @@ import edu.ubbcluj.emotion.database.file.manager.LandmarksManager;
 import edu.ubbcluj.emotion.database.file.manager.ResourceManagerException;
 import edu.ubbcluj.emotion.model.Landmarks;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
-import edu.ubbcluj.emotion.model.Point2D;
+import edu.ubbcluj.emotion.model.MyPoint2D;
 import edu.ubbcluj.emotion.util.Constants;
 import edu.ubbcluj.emotion.util.StringUtil;
 
@@ -43,9 +43,9 @@ public class FileLandmarksManager implements LandmarksManager {
 			public Void apply(final Integer arg0) {
 				final File f = new File(baseFolder.concat(files[arg0]));
 				try (Scanner scanner = new Scanner(f)) {
-					final List<Point2D> list = new LinkedList<>();
+					final List<MyPoint2D> list = new LinkedList<>();
 					while (scanner.hasNextFloat()) {
-						list.add(new Point2D(scanner.nextFloat(), scanner.nextFloat()));
+						list.add(new MyPoint2D(scanner.nextFloat(), scanner.nextFloat()));
 					}
 					landmarks[arg0] = new Landmarks(list);
 				} catch (final IOException e) {
@@ -72,7 +72,7 @@ public class FileLandmarksManager implements LandmarksManager {
 				final Landmarks landmarksList = landmarks.get(arg0);
 				try {
 					final BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-					for (final Point2D lm : landmarksList) {
+					for (final MyPoint2D lm : landmarksList) {
 						writer.write(String.valueOf(lm.getX()));
 						writer.write(" ");
 						writer.write(String.valueOf(lm.getY()));
