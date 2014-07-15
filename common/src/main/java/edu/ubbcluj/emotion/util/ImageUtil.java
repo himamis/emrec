@@ -63,8 +63,6 @@ public class ImageUtil {
 		}
 		return matrix;
 	}
-	
-	public static double[][] 
 
 	public static BufferedImage convertRowVectorToImage(double[] array, int w, int h) {
 		float[] floatArray = convertDoubleVectorToFloatVector(array);

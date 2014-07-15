@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.MBFImage;
 
@@ -49,6 +50,14 @@ public class Image implements Serializable {
 	public BufferedImage getBufferedImage() {
 		return ImageUtilities.createBufferedImage(new MBFImage(image, width, height, true));
 	}
+	
+	public MBFImage getMBFImage() {
+		return new MBFImage(image, width, height, true);
+	}
+	
+	public FImage getFImage() {
+		return getMBFImage().flatten();
+	}
 
 	public Long getId() {
 		return id;
@@ -80,6 +89,19 @@ public class Image implements Serializable {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+	
+	public void setBufferedImage(BufferedImage image) {
+		this.bufferedImage = image;
+		this.image = ImageUtilities.createMBFImage(image, true).toPackedARGBPixels();
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+	}
+	
+	public void setFImage(FImage image) {
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+		this.image = image.toPackedARGBPixels();
 	}
 
 }

@@ -43,4 +43,20 @@ public class DatabaseInformationService {
 		}
 		return sequenceLength;
 	}
+
+	public boolean hasEmotion(final String subject, final String sequence) {
+		String emotion = resourceInfo.getEmotion(folder, subject, sequence);
+		return emotion != null;
+	}
+
+	public boolean hasLandmarks(final String subject, final String sequence) {
+		String[] landmarks = resourceInfo.getLandmarks(folder, subject, sequence);
+		return landmarks != null && landmarks.length > 0;
+	}
+
+	public boolean hasLandmarks() {
+		String[] landmarks = resourceInfo.getLandmarks(folder, "S005", "001");
+		return landmarks != null && landmarks.length > 0;
+	}
+
 }

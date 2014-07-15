@@ -56,5 +56,14 @@ public class Point2D implements Serializable {
 	public void setY(float y) {
 		this.y = y;
 	}
+	
+	public void fromPoint2D(java.awt.geom.Point2D.Float p) {
+		setX(p.x);
+		setY(p.y);
+	}
+	
+	public java.awt.geom.Point2D.Float toPoint2D() {
+		return new java.awt.geom.Point2D.Float(x, y);
+	}
 
 }
