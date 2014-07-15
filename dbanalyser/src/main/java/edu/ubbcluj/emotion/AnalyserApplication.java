@@ -1,7 +1,5 @@
 package edu.ubbcluj.emotion;
 
-import static edu.ubbcluj.emotion.util.StringUtil.debug;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
@@ -11,10 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
-import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.test.OpenImajTest;
 import edu.ubbcluj.emotion.test.Test;
-import edu.ubbcluj.emotion.test.halftraining.ShortestLengthTest;
 import edu.ubbcluj.emotion.util.Constants;
 
 public class AnalyserApplication {
@@ -34,7 +30,7 @@ public class AnalyserApplication {
 		final ResourceLoaderFactory resourceLoaderFactory = new FileResourceLoaderFactory();
 
 		Test test = new OpenImajTest();
-		double[] result = test.run(resourceLoaderFactory, "openimaj_folder", 5);
+		double[] result = test.run(resourceLoaderFactory, "openimaj_diff", 20);
 
 		/*for (int i = 0; i < result.length; i++) {
 			

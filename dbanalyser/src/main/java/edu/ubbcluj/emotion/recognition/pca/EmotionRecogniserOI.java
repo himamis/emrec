@@ -72,19 +72,21 @@ public class EmotionRecogniserOI implements Serializable {
 		// debug("PCA");
 		// long start = System.currentTimeMillis();
 		PCA pca = new PCA(data);
-		fe = pca;
 		// long end = System.currentTimeMillis();
 		// debug("Runtime: " + (end - start) + "ms");
 		data = null;
 
 		// debug("Selecting K best eigen vectors");
 		selectKEigenVectors(pca.getEigenVectors(), pca.getEigenValues());
+		
 		meanValues = pca.getMeanValues();
+		
+		fe = new FeatureExtractorPCA(meanValues, kEigenVectors);
 
 		// debug("Projecting database images");
-		projectTrainingDataOnEigenVectors(kEigenVectors);
+		//projectTrainingDataOnEigenVectors(kEigenVectors);
 
-		annotator = new LiblinearAnnotator<double[], Emotion>(pca, Mode.MULTICLASS, SolverType.L2R_L2LOSS_SVC, 1.0, 0.00001);
+		annotator = new LiblinearAnnotator<double[], Emotion>(fe, Mode.MULTICLASS, SolverType.L2R_L2LOSS_SVC, 1.0, 0.00001);
 		annotator.train(trainingDataProvider.getGroupedDataset());
 	}
 
