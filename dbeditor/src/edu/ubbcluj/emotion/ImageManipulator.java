@@ -1,4 +1,4 @@
-package ck.database.editor;
+package edu.ubbcluj.emotion;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;

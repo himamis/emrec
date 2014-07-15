@@ -1,4 +1,4 @@
-package ck.database.editor.util;
+package edu.ubbcluj.emotion.util;
 
 import java.util.ArrayList;
 import java.util.List;

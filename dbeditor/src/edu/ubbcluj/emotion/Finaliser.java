@@ -1,4 +1,4 @@
-package ck.database.editor;
+package edu.ubbcluj.emotion;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

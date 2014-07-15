@@ -1,4 +1,4 @@
-package ck.database.editor.util;
+package edu.ubbcluj.emotion.util;
 
 import java.awt.image.BufferedImage;
 
@@ -10,12 +10,12 @@ import org.openimaj.image.processing.face.detection.keypoints.KEDetectedFace;
 import org.openimaj.math.geometry.point.Point2dImpl;
 import org.openimaj.math.geometry.shape.Rectangle;
 
+import edu.ubbcluj.emotion.model.Image;
 import edu.ubbcluj.emotion.model.ImageSequence;
 import edu.ubbcluj.emotion.model.Landmarks;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
 import edu.ubbcluj.emotion.model.Point2D;
 import edu.ubbcluj.emotion.model.Sequence;
-import edu.ubbcluj.emotion.util.Constants;
 
 public class OpenImajUtil {
 
@@ -46,7 +46,7 @@ public class OpenImajUtil {
 		FacialKeypoint[] keypoints = new FacialKeypoint[FacialKeypointType.values().length];
 		int i = 0;
 		for (FacialKeypointType FK : FacialKeypointType.values()) {
-			int[] indices = getFacialKeypointTypeIndices(FK);
+			int[] indices = getFacialKeypointTypeIndicesReverse(FK);
 			float[] coords = getMeanCoords(indices, landmarksList);
 			Point2dImpl point = new Point2dImpl(coords[0], coords[1]);
 			FacialKeypoint kp = new FacialKeypoint(FK, point);
@@ -55,6 +55,32 @@ public class OpenImajUtil {
 		}
 		FImage fimage = ImageUtilities.createFImage(image);
 		return new KEDetectedFace(getBounds(landmarksList), fimage, keypoints, (float) 10.0);
+	}
+	
+	public static KEDetectedFace fromImageAndLandmarks(Image image, Landmarks landmarks) {
+		FacialKeypoint[] keypoints = getFactialKeypoints(landmarks);
+		FImage fimage = image.getFImage();
+		return new KEDetectedFace(getBounds(landmarks), fimage, keypoints, (float) 10.0);
+	}
+	
+	public static KEDetectedFace fromImageAndLandmarks(Image image, Landmarks landmarks, Rectangle bounds) {
+		FacialKeypoint[] keypoints = getFactialKeypoints(landmarks);
+		FImage fimage = image.getFImage();
+		return new KEDetectedFace(bounds, fimage, keypoints, (float) 10.0);
+	}
+	
+	private static FacialKeypoint[] getFactialKeypoints(Landmarks landmarks) {
+		FacialKeypoint[] keypoints = new FacialKeypoint[FacialKeypointType.values().length];
+		int i = 0;
+		for (FacialKeypointType FK : FacialKeypointType.values()) {
+			int[] indices = getFacialKeypointTypeIndicesReverse(FK);
+			float[] coords = getMeanCoords(indices, landmarks);
+			Point2dImpl point = new Point2dImpl(coords[0], coords[1]);
+			FacialKeypoint kp = new FacialKeypoint(FK, point);
+			keypoints[i] = kp;
+			i++;
+		}
+		return keypoints;
 	}
 
 	private static int[] getFacialKeypointTypeIndices(FacialKeypointType fkt) {
@@ -85,6 +111,38 @@ public class OpenImajUtil {
 			return Constants.CNOSEMIDDLE;
 		case NOSE_RIGHT:
 			return Constants.CNOSERIGHT;
+		}
+		return null;
+	}
+	
+	private static int[] getFacialKeypointTypeIndicesReverse(FacialKeypointType fkt) {
+		switch (fkt) {
+		case EYE_LEFT_CENTER:
+			return Constants.CEYERIGHTCENTER;
+		case EYE_LEFT_LEFT:
+			return Constants.CEYERIGHTRIGHT;
+		case EYE_LEFT_RIGHT:
+			return Constants.CEYERIGHTLEFT;
+		case EYE_RIGHT_CENTER:
+			return Constants.CEYELEFTCENTER;
+		case EYE_RIGHT_LEFT:
+			return Constants.CEYELEFTRIGHT;
+		case EYE_RIGHT_RIGHT:
+			return Constants.CEYELEFTLEFT;
+		case MOUTH_CENTER:
+			return Constants.MOUTHCENTER;
+		case MOUTH_LEFT:
+			return Constants.MOUTHRIGHT;
+		case MOUTH_RIGHT:
+			return Constants.MOUTHLEFT;
+		case NOSE_BRIDGE:
+			return Constants.CNOSEBRIDGE;
+		case NOSE_LEFT:
+			return Constants.CNOSERIGHT;
+		case NOSE_MIDDLE:
+			return Constants.CNOSEMIDDLE;
+		case NOSE_RIGHT:
+			return Constants.CNOSELEFT;
 		}
 		return null;
 	}
