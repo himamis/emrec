@@ -31,7 +31,8 @@ public class FileLandmarksManager implements LandmarksManager {
 	public LandmarksSequence loadLandmarks(final String folder, final String subject, final String sequence) {
 		final String baseFolder = StringUtil.buildLandmarksFolderName(folder).concat(StringUtil.buildSubjectFolder(subject))
 				.concat(StringUtil.buildSequenceFolder(sequence));
-		final String[] files = resInfo.getLandmarks(folder, subject, sequence);
+		final String[] filess = resInfo.getLandmarks(folder, subject, sequence);
+		final String[] files = (filess == null) ? new String[0] : filess;
 
 		// final Vector<List<Point2D.Float>> landmarks = new Vector<>();
 
@@ -61,8 +62,10 @@ public class FileLandmarksManager implements LandmarksManager {
 
 	@Override
 	public void saveLandmarks(final String folder, final LandmarksSequence landmarks, final String subject, final String sequence) {
-		final String name = StringUtil.buildLandmarksFolderName(folder).concat(StringUtil.buildSubjectFolder(subject))
-				.concat(StringUtil.buildSequenceFolder(sequence)).concat(StringUtil.buildBaseFileName(subject, sequence));
+		final String dir = StringUtil.buildLandmarksFolderName(folder).concat(StringUtil.buildSubjectFolder(subject))
+				.concat(StringUtil.buildSequenceFolder(sequence));
+		final String name = dir.concat(StringUtil.buildBaseFileName(subject, sequence));
+		new File(dir).mkdirs();
 
 		Parallel.forEach(landmarks.size(), new Function<Integer, Void>() {
 
