@@ -13,7 +13,7 @@ import edu.ubbcluj.emotion.database.file.loader.ImageFilter;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
 import edu.ubbcluj.emotion.database.file.manager.ResourceManager;
 import edu.ubbcluj.emotion.database.file.manager.ResourceManagerFactory;
-import edu.ubbcluj.emotion.model.ActionUnitList;
+import edu.ubbcluj.emotion.model.ActionUnitSet;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.model.ImageSequence;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
@@ -42,7 +42,7 @@ public class FileResourceLoader implements ResourceLoader {
 				ImageSequence imageSequence = resourceManager.loadImageSequence(subject, sequence);
 				Emotion emotion = resourceManager.loadEmotion(subject, sequence);
 				LandmarksSequence landmarks = resourceManager.loadLandmarks(subject, sequence);
-				ActionUnitList actionUnitList = resourceManager.loadActionUnitList(subject, sequence);
+				ActionUnitSet actionUnitList = resourceManager.loadActionUnitList(subject, sequence);
 				for (int i = 0; i < imageSequence.size(); i++) {
 					boolean isLastImage = i == imageSequence.size() - 1;
 					if (filter.filter(emotion, landmarks, actionUnitList, isLastImage, i)) {

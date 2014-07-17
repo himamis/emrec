@@ -3,29 +3,29 @@ package edu.ubbcluj.emotion.swing;
 import javax.swing.table.AbstractTableModel;
 
 import edu.ubbcluj.emotion.model.ActionUnit;
-import edu.ubbcluj.emotion.model.ActionUnitList;
+import edu.ubbcluj.emotion.model.ActionUnitSet;
 
 public class FacsTableModel extends AbstractTableModel {
 
 	private static final long	serialVersionUID	= 1L;
-	private ActionUnitList		aulist;
+	private ActionUnit[]		auArray;
 
 	public int getColumnCount() {
 		return 3;
 	}
 
 	public int getRowCount() {
-		if (aulist == null) {
+		if (auArray == null) {
 			return 0;
 		}
-		return aulist.size();
+		return auArray.length;
 	}
 
 	public Object getValueAt(int row, int col) {
-		if (aulist == null) {
+		if (auArray == null) {
 			return null;
 		}
-		ActionUnit au = aulist.get(row);
+		ActionUnit au = auArray[row];
 		if (col == 0) {
 			return au.getCode();
 		} else if (col == 1) {
@@ -50,8 +50,8 @@ public class FacsTableModel extends AbstractTableModel {
 		}
 	}
 
-	public void setAuList(ActionUnitList aulist) {
-		this.aulist = aulist;
+	public void setAuList(ActionUnitSet aulist) {
+		this.auArray = (ActionUnit[]) aulist.getActionUnits().toArray();
 		fireTableDataChanged();
 	}
 

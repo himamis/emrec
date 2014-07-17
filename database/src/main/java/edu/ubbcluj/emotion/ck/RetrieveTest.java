@@ -14,7 +14,7 @@ public class RetrieveTest {
 
 	public static void main(String[] args) {
 		JpaGenericDao<Subject, Long> dao = new JpaGenericDao<>(database, Subject.class);
-		Subject s = dao.read((long) 4);
+		//Subject s = dao.read((long) 4);
 		
 		dao.close();
 		JpaUtil.getEntityManagerFactory(database).close();
