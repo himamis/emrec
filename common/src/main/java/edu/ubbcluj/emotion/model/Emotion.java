@@ -2,7 +2,7 @@ package edu.ubbcluj.emotion.model;
 
 import java.io.Serializable;
 
-public enum Emotion implements Serializable {
+public enum Emotion implements Serializable, DatasetKey {
 	// NEUTRAL(0),
 	ANGER(1), CONTEMPT(2), DISGUST(3), FEAR(4), HAPPY(5), SADNESS(6), SUPRISE(7);
 
@@ -38,6 +38,5 @@ public enum Emotion implements Serializable {
 			return null;
 		}
 	}
-	
 
 }

@@ -38,7 +38,7 @@ public class Sequence implements Serializable {
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "actionunitlist_id")
-	private ActionUnitList		actionUnitList;
+	private ActionUnitSet		actionUnitList;
 
 	@Enumerated(EnumType.STRING)
 	private Emotion				emotion;
@@ -82,11 +82,11 @@ public class Sequence implements Serializable {
 		this.landmarksSequence = landmarksSequence;
 	}
 
-	public ActionUnitList getActionUnitList() {
+	public ActionUnitSet getActionUnitList() {
 		return actionUnitList;
 	}
 
-	public void setActionUnitList(ActionUnitList actionUnitList) {
+	public void setActionUnitList(ActionUnitSet actionUnitList) {
 		this.actionUnitList = actionUnitList;
 	}
 

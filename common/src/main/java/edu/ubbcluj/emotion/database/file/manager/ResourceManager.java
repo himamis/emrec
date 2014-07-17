@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ubbcluj.emotion.database.file.info.ResourceInformationService;
-import edu.ubbcluj.emotion.model.ActionUnitList;
+import edu.ubbcluj.emotion.model.ActionUnitSet;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.model.ImageSequence;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
@@ -35,7 +35,7 @@ public class ResourceManager {
 	private final Map<String, ImageSequence>		imageSequenceCache	= new HashMap<>();
 	private final Map<String, Emotion>				emotionCache		= new HashMap<>();
 	private final Map<String, LandmarksSequence>	landmarksCache		= new HashMap<>();
-	private final Map<String, ActionUnitList>		actionUnitListCache	= new HashMap<>();
+	private final Map<String, ActionUnitSet>		actionUnitListCache	= new HashMap<>();
 	private final Map<String, Sequence>				sequenceCache		= new HashMap<>();
 	private final Map<String, Subject>				subjectCache		= new HashMap<>();
 
@@ -98,7 +98,7 @@ public class ResourceManager {
 			seq.setEmotion(emotion);
 		}
 		if ((flags & ACTION_UNITS) != 0 && seq.getActionUnitList() == null) {
-			final ActionUnitList actionUnitList = loadActionUnitList(subject, sequence);
+			final ActionUnitSet actionUnitList = loadActionUnitList(subject, sequence);
 			seq.setActionUnitList(actionUnitList);
 		}
 		if ((flags & IMAGE_SEQUENCE) != 0 && seq.getImageSequence() == null) {
@@ -151,9 +151,9 @@ public class ResourceManager {
 		return landmarks;
 	}
 
-	public ActionUnitList loadActionUnitList(final String subject, final String sequence) {
+	public ActionUnitSet loadActionUnitList(final String subject, final String sequence) {
 		final String key = createKey(subject, sequence);
-		ActionUnitList actionUnitList = null;
+		ActionUnitSet actionUnitList = null;
 		if (USE_CACHE) {
 			if ((actionUnitList = actionUnitListCache.get(key)) == null) {
 				actionUnitList = actionUnitListManager.loadActionUnitList(folder, subject, sequence);

@@ -1,6 +1,6 @@
 package edu.ubbcluj.emotion.database.file.loader;
 
-import edu.ubbcluj.emotion.model.ActionUnitList;
+import edu.ubbcluj.emotion.model.ActionUnitSet;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
 
@@ -30,7 +30,7 @@ public class ImageFilterAdapter implements ImageFilter {
 	}
 
 	@Override
-	public boolean filter(final ActionUnitList actionUnitList) {
+	public boolean filter(final ActionUnitSet actionUnitList) {
 		return true;
 	}
 
@@ -50,7 +50,7 @@ public class ImageFilterAdapter implements ImageFilter {
 	}
 
 	@Override
-	public boolean filter(final Emotion emotion, final LandmarksSequence landmarks, final ActionUnitList actionUnitList, final boolean isLastImage, final int index) {
+	public boolean filter(final Emotion emotion, final LandmarksSequence landmarks, final ActionUnitSet actionUnitList, final boolean isLastImage, final int index) {
 		return filter(emotion) && filter(landmarks) && filter(actionUnitList) && filter(isLastImage) && filter(index);
 	}
 

@@ -2,7 +2,7 @@ package edu.ubbcluj.emotion.model;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,11 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "actionunitlist")
-public class ActionUnitList implements Iterable<ActionUnit>, Serializable {
+public class ActionUnitSet implements Iterable<ActionUnit>, Serializable, DatasetKey {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -29,12 +28,12 @@ public class ActionUnitList implements Iterable<ActionUnit>, Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "actionunitlist_actionunits", joinColumns = @JoinColumn(name = "actionunitlist_id"), inverseJoinColumns = @JoinColumn(name = "actionunit_id"))
-	private List<ActionUnit>	actionUnits;
+	private Set<ActionUnit>		actionUnits;
 
-	public ActionUnitList() {
+	public ActionUnitSet() {
 	}
 
-	public ActionUnitList(List<ActionUnit> actionUnits) {
+	public ActionUnitSet(Set<ActionUnit> actionUnits) {
 		this.actionUnits = actionUnits;
 	}
 
@@ -45,12 +44,7 @@ public class ActionUnitList implements Iterable<ActionUnit>, Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	@Transient
-	public ActionUnit get(int index) {
-		return actionUnits.get(index);
-	}
-
+	
 	public int size() {
 		return actionUnits.size();
 	}
@@ -60,12 +54,37 @@ public class ActionUnitList implements Iterable<ActionUnit>, Serializable {
 		return actionUnits.iterator();
 	}
 
-	public List<ActionUnit> getActionUnits() {
+	public Set<ActionUnit> getActionUnits() {
 		return actionUnits;
 	}
 
-	public void setActionUnits(List<ActionUnit> actionUnits) {
+	public void setActionUnits(Set<ActionUnit> actionUnits) {
 		this.actionUnits = actionUnits;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((actionUnits == null) ? 0 : actionUnits.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ActionUnitSet other = (ActionUnitSet) obj;
+		if (actionUnits == null) {
+			if (other.actionUnits != null)
+				return false;
+		} else if (!actionUnits.equals(other.actionUnits))
+			return false;
+		return true;
+	}
+	
 }

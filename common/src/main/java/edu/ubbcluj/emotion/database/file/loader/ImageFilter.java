@@ -1,6 +1,6 @@
 package edu.ubbcluj.emotion.database.file.loader;
 
-import edu.ubbcluj.emotion.model.ActionUnitList;
+import edu.ubbcluj.emotion.model.ActionUnitSet;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.model.LandmarksSequence;
 
@@ -13,7 +13,7 @@ public interface ImageFilter {
 
 	boolean filter(final LandmarksSequence landmarks);
 
-	boolean filter(final ActionUnitList actionUnitList);
+	boolean filter(final ActionUnitSet actionUnitList);
 
 	boolean filter(final boolean isLastImage);
 	
@@ -21,6 +21,6 @@ public interface ImageFilter {
 
 	int filter();
 
-	boolean filter(final Emotion emotion, final LandmarksSequence landmarks, final ActionUnitList actionUnitList, final boolean isLastImage, final int index);
+	boolean filter(final Emotion emotion, final LandmarksSequence landmarks, final ActionUnitSet actionUnitList, final boolean isLastImage, final int index);
 
 }
