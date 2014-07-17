@@ -1,16 +1,17 @@
 package edu.ubbcluj.emotion;
 
-import org.fastica.FastICA;
-import org.fastica.FastICAException;
 import org.fastica.math.Matrix;
+import org.openimaj.image.FImage;
 
 import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
+import edu.ubbcluj.emotion.fastica.FastICA;
+import edu.ubbcluj.emotion.util.ImageUtil;
 
 public class FastICATest {
 	
-	private static final String database = "openimaj_folder_small";
+	private static final String database = "openimaj_small3";
 
 	public static void main(String[] args) {
 		ResourceLoaderFactory rlf = new FileResourceLoaderFactory();
@@ -22,12 +23,16 @@ public class FastICATest {
 		double[][] data = dataProvider.getMatrixData();
 		double[][] transposedData = Matrix.transpose(data);
 		
-		try {
+		try {	
 			System.out.println("Start FastICA");
 			FastICA fica = new FastICA(transposedData, 200);
 			double[][] ic = fica.getICVectors();
 			System.out.println("Stop FastICA");
-		} catch (FastICAException e) {
+			double[][] tr = Matrix.transpose(ic);
+			ImageUtil.showImage(tr[0], 50);
+			ImageUtil.showImage(tr[1], 50);
+			ImageUtil.showImage(tr[2], 50);
+		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -8,6 +8,7 @@ import org.openimaj.data.dataset.GroupedDataset;
 import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.data.dataset.MapBackedDataset;
+import org.openimaj.experiment.annotations.DatasetDescription;
 import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
 
@@ -15,6 +16,7 @@ import edu.ubbcluj.emotion.database.file.loader.ImageFilterAdapter;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
 import edu.ubbcluj.emotion.model.Emotion;
 
+@DatasetDescription(name = "CK+", creator = "Lucey, P., Cohn, J. F., Kanade, T., Saragih, J., Ambadar, Z., & Matthews, I.", url = "http://www.pitt.edu/~emotion/ck-spread.htm", description = "")
 public class DataProvider {
 
 	private ResourceLoader											resourceLoader;

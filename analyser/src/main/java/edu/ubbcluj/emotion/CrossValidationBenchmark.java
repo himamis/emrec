@@ -18,7 +18,7 @@ import org.openimaj.experiment.validation.ValidationRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
 import org.openimaj.image.FImage;
 
-import edu.ubbcluj.emotion.engine.PCAEmotionRecogniserProvider;
+import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 
 @Experiment(author = "Bencze Balazs", dateCreated = "2014-07-12", description = "Emotion recognition cross validation experiment")
@@ -28,7 +28,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	protected CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>>	crossValidator;
 
 	@IndependentVariable
-	protected PCAEmotionRecogniserProvider												engine;
+	protected EmotionRecogniserProvider												engine;
 
 	@IndependentVariable
 	protected GroupedDataset<Emotion, ListDataset<FImage>, FImage>					dataset;
@@ -37,7 +37,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	protected AggregatedCMResult<Emotion>											result;
 
 	public CrossValidationBenchmark(CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator,
-			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, PCAEmotionRecogniserProvider engine) {
+			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider engine) {
 		this.crossValidator = crossValidator;
 		this.dataset = dataset;
 		this.engine = engine;

@@ -12,7 +12,6 @@ import org.fastica.ContrastFunction;
 import org.fastica.EigenValueFilter;
 import org.fastica.FastICAConfig;
 import org.fastica.FastICAException;
-import org.fastica.PCA;
 import org.fastica.Power3CFunction;
 import org.fastica.ProgressListener;
 import org.fastica.SortingEVFilter;
@@ -21,6 +20,8 @@ import org.fastica.math.EigenValueDecompositionSymm;
 import org.fastica.math.Matrix;
 import org.fastica.math.Vector;
 import org.fastica.util.AudioBuffer;
+
+import edu.ubbcluj.emotion.pca.PCA2;
 
 /**
  * The <code>FastICA<code> class contains the main
@@ -113,7 +114,9 @@ public class FastICA {
         listener.progressMade(ProgressListener.ComputationState.WHITENING, 0, 0, config.getNumICs());
         this.inVectors = inVectors;
         this.icVectors = null;
-        PCA pca = new PCA(inVectors);
+        System.out.println("Start PCA");
+        PCA2 pca = new PCA2(inVectors);
+        System.out.println("Stop PCA");
         meanValues = pca.getMeanValues();
         vectorsZeroMean = pca.getVectorsZeroMean();
         double[] eigenValues = pca.getEigenValues();

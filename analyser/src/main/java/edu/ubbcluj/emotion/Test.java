@@ -8,7 +8,6 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
-import org.apache.log4j.spi.LoggerFactory;
 import org.openimaj.data.dataset.GroupedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.ExperimentContext;
@@ -19,9 +18,11 @@ import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
 import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
+import edu.ubbcluj.emotion.crossvalidation.GroupedRandomSplitHalf;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
-import edu.ubbcluj.emotion.engine.PCAEmotionRecogniserProvider;
+import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
+import edu.ubbcluj.emotion.engine.ICAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.Constants;
 
@@ -29,7 +30,7 @@ public class Test {
 
 	private static Logger	logger		= org.slf4j.LoggerFactory.getLogger(Test.class);
 
-	private static String	database	= "openimaj_diff";
+	private static String	database	= "openimaj_small3";
 
 	public static void main(String[] args) {
 		initLogger();
@@ -43,23 +44,21 @@ public class Test {
 
 		System.out.println("Creating grouped dataset");
 		GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset = dataProvider.getGroupedDataset();
-		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedLeaveOneOut<>();
+		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedRandomSplitHalf<>(40);
 		// new GroupedLeaveOneOut<>();
-		for (int i = 10; i < 30; i++) {
-			PCAEmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(20);
+		EmotionRecogniserProvider engine = new ICAEmotionRecogniserProvider(200);
 
-			System.out.println("Creating benchmark");
-			CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine);
+		System.out.println("Creating benchmark");
+		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine);
 
-			System.out.println("Running experiment");
-			ExperimentContext experiment = ExperimentRunner.runExperiment(crossValidation);
-			String result = experiment.toString();
+		System.out.println("Running experiment");
+		ExperimentContext experiment = ExperimentRunner.runExperiment(crossValidation);
+		String result = experiment.toString();
 
-			try {
-				FileUtils.writeStringToFile(new File("C:\\experiment_k" + i +".txt"), result);
-			} catch (IOException e) {
-				System.out.println(result);
-			}
+		try {
+			FileUtils.writeStringToFile(new File("C:\\experimentica200.txt"), result);
+		} catch (IOException e) {
+			System.out.println(result);
 		}
 	}
 

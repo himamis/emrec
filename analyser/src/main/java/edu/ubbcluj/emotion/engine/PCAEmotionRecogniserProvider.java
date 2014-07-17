@@ -45,4 +45,9 @@ public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider{
 		return new EmotionRecogniser(annotator);
 	}
 
+	
+	@Override
+	public String toString() {
+		return "Emotion Recogniser using PCA (Principal Component Analisys) with " + k + " eigenvectors.";
+	}
 }
