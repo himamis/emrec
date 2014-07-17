@@ -25,6 +25,7 @@ public class AffineAligner implements SequenceEditor {
 	public void doEdit(Image image, Landmarks landmarks) {
 		KEDetectedFace face = OpenImajUtil.fromImageAndLandmarks(image, landmarks);
 		FImage alignedImage = aligner.align(face);
+		alignedImage.normalise();
 		image.setBufferedImage(ImageUtilities.createBufferedImage(alignedImage));
 	}
 
