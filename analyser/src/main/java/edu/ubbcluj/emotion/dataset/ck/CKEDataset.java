@@ -13,8 +13,8 @@ import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.model.Emotion;
 
 @DatasetDescription(name = "CK+", creator = "Lucey, P., Cohn, J. F., Kanade, T., Saragih, J., Ambadar, Z., & Matthews, I.", url = "http://www.pitt.edu/~emotion/ck-spread.htm"
-, description = "Cohn-Kanade database version 2, with cropped and aligned faces and resized to 50*60")
-public class CKESDataset extends AbstractCKDataset<Emotion> {
+, description = "Cohn-Kanade database version 2, with cropped and aligned faces and resized to 80*110")
+public class CKEDataset extends AbstractCKDataset<Emotion> {
 	
 	@Override
 	protected ImageFilter getImageFilter(final Emotion key) {
@@ -33,7 +33,7 @@ public class CKESDataset extends AbstractCKDataset<Emotion> {
 
 	@Override
 	protected String getFolderName() {
-		return "openimaj_small3";
+		return "openimaj_folder";
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class CKESDataset extends AbstractCKDataset<Emotion> {
 			set.add(emotion);
 		}
 		
-		return new DatasetInformation<Emotion>(50, 60, false, false, true, set);
+		return new DatasetInformation<Emotion>(80, 110, false, false, true, set);
 	}
 
 	@Override
