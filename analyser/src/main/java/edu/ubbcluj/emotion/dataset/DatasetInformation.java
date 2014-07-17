@@ -1,29 +1,22 @@
 package edu.ubbcluj.emotion.dataset;
 
-import java.util.Map;
 import java.util.Set;
 
 public class DatasetInformation<GROUP> {
-	private int					imageWidht;
-	private int					imageHeight;
-	private boolean				isDifferenceImage;
-	private boolean				hasLandmarks;
-	private boolean				isAligned;
-	private int					numberOfGroups;
-	private Map<GROUP, Integer>	numberOfInstancesPerGroup;
-	private Set<GROUP>			groups;
+	private int			imageWidht;
+	private int			imageHeight;
+	private boolean		isDifferenceImage;
+	private boolean		hasLandmarks;
+	private boolean		isAligned;
+	private Set<GROUP>	groups;
 
-	public DatasetInformation(int imageWidht, int imageHeight, boolean isDifferenceImage, boolean hasLandmarks, boolean isAligned,
-			Map<GROUP, Integer> numberOfInstancesPerGroup) {
-		super();
+	public DatasetInformation(int imageWidht, int imageHeight, boolean isDifferenceImage, boolean hasLandmarks, boolean isAligned, Set<GROUP> groups) {
 		this.imageWidht = imageWidht;
 		this.imageHeight = imageHeight;
 		this.isDifferenceImage = isDifferenceImage;
 		this.hasLandmarks = hasLandmarks;
 		this.isAligned = isAligned;
-		this.numberOfInstancesPerGroup = numberOfInstancesPerGroup;
-		this.numberOfGroups = this.numberOfInstancesPerGroup.keySet().size();
-		this.groups = this.numberOfInstancesPerGroup.keySet();
+		this.groups = groups;
 	}
 
 	public int getImageWidht() {
@@ -46,12 +39,8 @@ public class DatasetInformation<GROUP> {
 		return isAligned;
 	}
 
-	public Map<GROUP, Integer> getNumberOfInstancesPerGroup() {
-		return numberOfInstancesPerGroup;
-	}
-
 	public int getNumberOfGroups() {
-		return numberOfGroups;
+		return groups.size();
 	}
 
 	public Set<GROUP> getGroups() {

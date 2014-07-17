@@ -2,7 +2,6 @@ package edu.ubbcluj.emotion.crossvalidation;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.openimaj.data.RandomData;
@@ -10,14 +9,10 @@ import org.openimaj.data.dataset.GroupedDataset;
 import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.data.dataset.MapBackedDataset;
-import org.openimaj.experiment.dataset.split.GroupedRandomSplitter;
-import org.openimaj.experiment.dataset.util.DatasetAdaptors;
 import org.openimaj.experiment.validation.DefaultValidationData;
 import org.openimaj.experiment.validation.ValidationData;
 import org.openimaj.experiment.validation.cross.CrossValidationIterable;
 import org.openimaj.experiment.validation.cross.CrossValidator;
-import org.openimaj.util.list.AcceptingListView;
-import org.openimaj.util.list.SkippingListView;
 
 public class GroupedRandomSplitHalf<KEY, INSTANCE> implements CrossValidator<GroupedDataset<KEY, ListDataset<INSTANCE>, INSTANCE>> {
 

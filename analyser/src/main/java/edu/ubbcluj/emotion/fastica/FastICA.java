@@ -1,25 +1,15 @@
 package edu.ubbcluj.emotion.fastica;
 
-import java.io.File;
-
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-
 import org.fastica.BelowEVFilter;
-import org.fastica.CompositeEVFilter;
 import org.fastica.ContrastFunction;
 import org.fastica.EigenValueFilter;
 import org.fastica.FastICAConfig;
 import org.fastica.FastICAException;
-import org.fastica.Power3CFunction;
 import org.fastica.ProgressListener;
-import org.fastica.SortingEVFilter;
 import org.fastica.TanhCFunction;
 import org.fastica.math.EigenValueDecompositionSymm;
 import org.fastica.math.Matrix;
 import org.fastica.math.Vector;
-import org.fastica.util.AudioBuffer;
 
 import edu.ubbcluj.emotion.pca.PCA2;
 
@@ -32,7 +22,7 @@ public class FastICA {
 // asssume the data is a sequence of column vectors
 
     private double[][] inVectors;
-    private double[] meanValues;
+    //private double[] meanValues;
     private double[][] vectorsZeroMean;
     private double[][] whiteningMatrix;
     private double[][] dewhiteningMatrix;
@@ -117,7 +107,6 @@ public class FastICA {
         System.out.println("Start PCA");
         PCA2 pca = new PCA2(inVectors);
         System.out.println("Stop PCA");
-        meanValues = pca.getMeanValues();
         vectorsZeroMean = pca.getVectorsZeroMean();
         double[] eigenValues = pca.getEigenValues();
         double[][] eigenVectors = pca.getEigenVectors();
@@ -399,73 +388,5 @@ public class FastICA {
      */
     public double[][] getSeparatingMatrix() {
         return (separatingMatrix);
-    }
-
-    /**
-     * This <code>main</code> Method has been written
-     * for testing purposes.<br>
-     * Usage:<br>
-     * java org.fastica.FastICA [input wave] [number of independent components] [output wave]
-     * @param args the arguments as described above 
-     */
-    public static void main(
-            String[] args) {
-        if (args.length != 3) {
-            System.out.println("Usage:");
-            System.out.println("java org.fastica.FastICA [input wave] [number of independent components] [output wave]");
-            System.out.println();
-            return;
-        }
-        try {
-            // open a wave file and convert the signals
-            AudioBuffer buffer1 = new AudioBuffer(new File(args[0]));
-            // mix the signals
-            double[][] mixingMatrix = Matrix.newMatrix(5, 2);
-            mixingMatrix[0][0] = 0.5;
-            mixingMatrix[0][1] = 0.5;
-            mixingMatrix[1][0] = 0.3;
-            mixingMatrix[1][1] = 0.7;
-            mixingMatrix[2][0] = 0.6;
-            mixingMatrix[2][1] = 0.2;
-            mixingMatrix[3][0] = 0.2;
-            mixingMatrix[3][1] = 0.6;
-            mixingMatrix[4][0] = 0.3;
-            mixingMatrix[4][1] = 0.5;
-            double[][] mixedSignal = Matrix.mult(mixingMatrix, buffer1.getData());
-            // join some filters into a standard filter
-            CompositeEVFilter filter = new CompositeEVFilter();
-            filter.add(new BelowEVFilter(1.0e-8, false));
-            filter.add(new SortingEVFilter(true, true));
-            // build a ICA configuration
-            FastICAConfig config = new FastICAConfig(
-                    Integer.parseInt(args[1]),
-                    FastICAConfig.Approach.DEFLATION,
-                    1.0, 1.0e-16, 1000, null);
-            // build the progress listener
-            ProgressListener listener =
-                    new ProgressListener() {
-
-                        public void progressMade(
-                                ComputationState state,
-                                int component,
-                                int iteration,
-                                int maxComps) {
-                            System.out.print(
-                                    "\r"
-                                    + Integer.toString(component) + " - "
-                                    + Integer.toString(iteration) + "     ");
-                        }
-                    };
-            // perform the independent component analysis
-            System.out.println("Performing ICA");
-            FastICA fica = new FastICA(mixedSignal, config, new Power3CFunction(), filter, listener);
-            System.out.println();
-            // write the resulting signals to a wave file
-            AudioBuffer buffer2 = new AudioBuffer(fica.getICVectors(), buffer1.getSampleRate());
-            AudioInputStream stream2 = buffer2.getStream();
-            AudioSystem.write(stream2, AudioFileFormat.Type.WAVE, new File(args[2]));
-        } catch (Exception exc) {
-            exc.printStackTrace(System.err);
-        }
     }
 }

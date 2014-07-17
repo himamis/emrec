@@ -34,7 +34,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	protected GroupedDataset<Emotion, ListDataset<FImage>, FImage>					dataset;
 
 	@DependentVariable
-	protected AggregatedCMResult<Emotion>											result;
+	protected AggregatedCMResult<Emotion>											result;	
 
 	public CrossValidationBenchmark(CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator,
 			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider engine) {

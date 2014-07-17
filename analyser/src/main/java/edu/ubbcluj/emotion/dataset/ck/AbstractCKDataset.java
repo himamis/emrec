@@ -1,9 +1,28 @@
-package edu.ubbcluj.emotion.dataset;
+package edu.ubbcluj.emotion.dataset.ck;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.data.dataset.MapBackedDataset;
 import org.openimaj.experiment.annotations.DatasetDescription;
 import org.openimaj.image.FImage;
+import org.openimaj.image.ImageUtilities;
+import org.openimaj.math.geometry.shape.Rectangle;
+
+import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
+import edu.ubbcluj.emotion.database.file.loader.ImageFilter;
+import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
+import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
+import edu.ubbcluj.emotion.dataset.DatasetInformation;
+import edu.ubbcluj.emotion.dataset.FacialFeature;
+import edu.ubbcluj.emotion.dataset.HasFacialFeatures;
+import edu.ubbcluj.emotion.dataset.HasInformation;
+import edu.ubbcluj.emotion.model.DatasetKey;
 
 @DatasetDescription(name = "CK+", creator = "Lucey, P., Cohn, J. F., Kanade, T., Saragih, J., Ambadar, Z., & Matthews, I.", url = "http://www.pitt.edu/~emotion/ck-spread.htm", description = "Version 2, referred to as CK+, includes both posed and non-posed (spontaneous) expressions "
 		+ "and additional types of metadata. For posed expressions, the number of sequences is increased"
@@ -16,25 +35,29 @@ import org.openimaj.image.FImage;
 		+ " unit and expression recognition, a linear support vector machine (SVM) classifier with leave-one-out subject"
 		+ " cross-validation was used. Both sets of results are included with the metadata. For a full description of CK+,"
 		+ " please see P. Lucey et al. (2010).")
-public abstract class CKDataset<KEY> extends MapBackedDataset<KEY, ListDataset<FImage>, FImage> implements HasFacialFeatures, HasInformation<KEY> {
+public abstract class AbstractCKDataset<KEY extends DatasetKey> extends MapBackedDataset<KEY, ListDataset<FImage>, FImage> implements
+		HasFacialFeatures, HasInformation<KEY> {
 
-	public enum Folder {
-		OPENIMAJ_SMALL("openimaj_small3"), OPENIMAJ_DIFF("openimaj_diff"), OPENIMAJ_FOLDER("openimaj_folder");
+	private double[][]						matrixData;
 
-		private String	folderName;
+	private DatasetInformation<KEY>			datasetInformation;
 
-		Folder(String folderName) {
-			this.folderName = folderName;
-		}
+	private Map<FacialFeature, Rectangle>	facialFeaturesLocation	= new HashMap<>();
 
-		public String getFolderName() {
-			return folderName;
+	public AbstractCKDataset() {
+		DatasetInformation<KEY> information = getInformation();
+		ResourceLoaderFactory rlf = new FileResourceLoaderFactory();
+		ResourceLoader resourceLoader = rlf.getResourceLoader(getFolderName());
+
+		for (KEY key : information.getGroups()) {
+			List<FImage> images = new ArrayList<>();
+			List<BufferedImage> bufferedImages = resourceLoader.getImages(getImageFilter(key));
+			for (BufferedImage bufferedImage : bufferedImages) {
+				images.add(ImageUtilities.createFImage(bufferedImage));
+			}
+			put(key, new ListBackedDataset<FImage>(images));
 		}
 	}
-	
-	
-
-	private double[][]	matrixData;
 
 	/**
 	 * Transform the dataset to a matrix containing the images. The information
@@ -78,4 +101,30 @@ public abstract class CKDataset<KEY> extends MapBackedDataset<KEY, ListDataset<F
 			}
 		}
 	}
+	
+	@Override
+	public Rectangle getFacialFeatureLocation(FacialFeature f) {
+		Rectangle rectangle;
+		if ((rectangle = facialFeaturesLocation.get(f)) == null) {
+			rectangle = constructFacialFeatureLocationObject(f);
+			facialFeaturesLocation.put(f, rectangle);
+		}
+		return rectangle;
+	}
+	
+	@Override
+	public DatasetInformation<KEY> getInformation() {
+		if (datasetInformation == null) {
+			datasetInformation = constructDatasetInformationObject();
+		}
+		return datasetInformation;
+	}
+
+	protected abstract ImageFilter getImageFilter(KEY key);
+
+	protected abstract String getFolderName();
+	
+	protected abstract DatasetInformation<KEY> constructDatasetInformationObject();
+	
+	protected abstract Rectangle constructFacialFeatureLocationObject(FacialFeature f);
 }

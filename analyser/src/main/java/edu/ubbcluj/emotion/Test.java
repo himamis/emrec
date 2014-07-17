@@ -13,14 +13,11 @@ import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.ExperimentContext;
 import org.openimaj.experiment.ExperimentRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
-import org.openimaj.experiment.validation.cross.GroupedLeaveOneOut;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
-import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
 import edu.ubbcluj.emotion.crossvalidation.GroupedRandomSplitHalf;
-import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
-import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
+import edu.ubbcluj.emotion.dataset.ck.CKESDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.engine.ICAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
@@ -30,20 +27,18 @@ public class Test {
 
 	private static Logger	logger		= org.slf4j.LoggerFactory.getLogger(Test.class);
 
-	private static String	database	= "openimaj_small3";
-
 	public static void main(String[] args) {
 		initLogger();
 		logger.error("test started");
 
-		ResourceLoaderFactory rlf = new FileResourceLoaderFactory();
+		/*ResourceLoaderFactory rlf = new FileResourceLoaderFactory();
 		ResourceLoader resourceLoader = rlf.getResourceLoader(database);
 
 		System.out.println("Creating data provider");
-		DataProvider dataProvider = new DataProvider(resourceLoader);
+		DataProvider dataProvider = new DataProvider(resourceLoader);*/
 
 		System.out.println("Creating grouped dataset");
-		GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset = dataProvider.getGroupedDataset();
+		GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset = new CKESDataset();
 		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedRandomSplitHalf<>(40);
 		// new GroupedLeaveOneOut<>();
 		EmotionRecogniserProvider engine = new ICAEmotionRecogniserProvider(200);
