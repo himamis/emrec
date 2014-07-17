@@ -60,6 +60,7 @@ public class Test {
 		} catch (IOException e) {
 			System.out.println(result);
 		}
+
 	}
 
 	private static void initLogger() {
