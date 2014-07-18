@@ -18,6 +18,7 @@ import org.openimaj.experiment.validation.ValidationRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
 import org.openimaj.image.FImage;
 
+import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 
@@ -25,19 +26,19 @@ import edu.ubbcluj.emotion.model.Emotion;
 public class CrossValidationBenchmark implements RunnableExperiment {
 
 	@IndependentVariable
-	protected CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>>	crossValidator;
+	protected CrossValidator<AbstractDataset<Emotion>>				crossValidator;
 
 	@IndependentVariable
-	protected EmotionRecogniserProvider												engine;
+	protected EmotionRecogniserProvider								engine;
 
 	@IndependentVariable
-	protected GroupedDataset<Emotion, ListDataset<FImage>, FImage>					dataset;
+	protected GroupedDataset<Emotion, ListDataset<FImage>, FImage>	dataset;
 
 	@DependentVariable
-	protected AggregatedCMResult<Emotion>											result;
+	protected AggregatedCMResult<Emotion>							result;
 
-	public CrossValidationBenchmark(CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator,
-			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider engine) {
+	public CrossValidationBenchmark(CrossValidator<AbstractDataset<Emotion>> crossValidator, AbstractDataset<Emotion> dataset,
+			EmotionRecogniserProvider engine) {
 		this.crossValidator = crossValidator;
 		this.dataset = dataset;
 		this.engine = engine;
@@ -52,12 +53,11 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 		final CMAggregator<Emotion> aggregator = new CMAggregator<Emotion>();
 		System.out.println("Performing experiment");
 		result = ValidationRunner.run(aggregator, dataset, crossValidator,
-				new ValidationOperation<GroupedDataset<Emotion, ListDataset<FImage>, FImage>, CMResult<Emotion>>() {
+				new ValidationOperation<AbstractDataset<Emotion>, CMResult<Emotion>>() {
 
 					@Time(identifier = "Train and Evaluate recogniser")
 					@Override
-					public CMResult<Emotion> evaluate(GroupedDataset<Emotion, ListDataset<FImage>, FImage> training,
-							GroupedDataset<Emotion, ListDataset<FImage>, FImage> validation) {
+					public CMResult<Emotion> evaluate(AbstractDataset<Emotion> training, AbstractDataset<Emotion> validation) {
 						final EmotionRecogniser recogniser = engine.create(training);
 
 						final ClassificationEvaluator<CMResult<Emotion>, Emotion, FImage> eval = new ClassificationEvaluator<>(recogniser,

@@ -1,8 +1,6 @@
 package edu.ubbcluj.emotion.engine;
 
 import org.fastica.FastICAException;
-import org.openimaj.data.dataset.GroupedDataset;
-import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.image.FImage;
 import org.openimaj.image.feature.FImage2DoubleFV;
 import org.openimaj.ml.annotation.linear.LiblinearAnnotator;
@@ -13,6 +11,7 @@ import com.davidsoergel.conja.RuntimeExecutionException;
 import de.bwaldvogel.liblinear.SolverType;
 import edu.ubbcluj.emotion.EmotionRecogniser;
 import edu.ubbcluj.emotion.FeatureExtractorICA;
+import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.fastica.FastICA;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.DataUtil;
@@ -26,7 +25,7 @@ public class ICAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 	}
 
 	@Override
-	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData) {
+	public EmotionRecogniser create(AbstractDataset<Emotion> trainingData) {
 		double[][] data = DataUtil.<Emotion, FImage> getMatrixData(trainingData, FImage2DoubleFV.INSTANCE);
 		double[][] transposedData = org.fastica.math.Matrix.transpose(data);
 		try {

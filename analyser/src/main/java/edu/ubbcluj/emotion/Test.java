@@ -13,7 +13,6 @@ import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.ExperimentContext;
 import org.openimaj.experiment.ExperimentRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
-import org.openimaj.experiment.validation.cross.GroupedLeaveOneOut;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
@@ -35,7 +34,7 @@ public class Test {
 		System.out.println("Creating grouped dataset");
 		GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset = new CKEDDataset();
 		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedRandomSplitHalf<>(100);
-		// new GroupedLeaveOneOut<>();
+
 		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50);
 
 		System.out.println("Creating benchmark");

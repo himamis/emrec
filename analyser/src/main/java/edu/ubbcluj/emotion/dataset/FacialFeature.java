@@ -6,5 +6,6 @@ public enum FacialFeature {
 	MOUTH,
 	NOSE,
 	EYES,
-	FOREHEAD
+	FOREHEAD,
+	FULL_FACE
 }
