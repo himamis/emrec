@@ -13,11 +13,13 @@ import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.ExperimentContext;
 import org.openimaj.experiment.ExperimentRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
+import org.openimaj.experiment.validation.cross.GroupedLeaveOneOut;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
-import edu.ubbcluj.emotion.crossvalidation.GroupedRandomSplitHalf;
-import edu.ubbcluj.emotion.dataset.ck.CKEDDataset;
+import edu.ubbcluj.emotion.dataset.AbstractDataset;
+import edu.ubbcluj.emotion.dataset.FacialFeature;
+import edu.ubbcluj.emotion.dataset.ck.CKESDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.engine.PCAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
@@ -32,10 +34,10 @@ public class Test {
 		logger.error("test started");
 
 		System.out.println("Creating grouped dataset");
-		GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset = new CKEDDataset();
-		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedRandomSplitHalf<>(100);
+		AbstractDataset<Emotion> dataset = new CKESDataset();
+		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedLeaveOneOut<>();
 
-		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50);
+		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
 
 		System.out.println("Creating benchmark");
 		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine);
@@ -45,7 +47,7 @@ public class Test {
 		String result = experiment.toString();
 
 		try {
-			FileUtils.writeStringToFile(new File("C:\\ckedd502.txt"), result);
+			FileUtils.writeStringToFile(new File("C:\\ckeSfffff50.txt"), result);
 		} catch (IOException e) {
 			System.out.println(result);
 		}

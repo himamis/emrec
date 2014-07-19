@@ -50,17 +50,19 @@ public class CKESDataset extends AbstractCKDataset<Emotion> {
 	protected Rectangle constructFacialFeatureLocationObject(FacialFeature f) {
 		switch (f) {
 		case EYES:
-			return new Rectangle();
+			return new Rectangle(0, 12, 50, 16);
 		case FOREHEAD:
 			return new Rectangle();
 		case LEFT_EYE:
 			return new Rectangle();
 		case MOUTH:
-			return new Rectangle();
+			return new Rectangle(5, 40, 40, 20);
 		case NOSE:
 			return new Rectangle();
 		case RIGHT_EYE:
 			return new Rectangle();
+		case FULL_FACE:
+			return new Rectangle(0, 0, 50, 60);
 		}
 		return null;
 	}

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.data.dataset.ListDataset;
-import org.openimaj.data.dataset.MapBackedDataset;
 import org.openimaj.experiment.annotations.DatasetDescription;
 import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
@@ -18,6 +17,7 @@ import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
 import edu.ubbcluj.emotion.database.file.loader.ImageFilter;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoader;
 import edu.ubbcluj.emotion.database.file.loader.ResourceLoaderFactory;
+import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.DatasetInformation;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.dataset.HasFacialFeatures;
@@ -35,7 +35,7 @@ import edu.ubbcluj.emotion.model.DatasetKey;
 		+ " unit and expression recognition, a linear support vector machine (SVM) classifier with leave-one-out subject"
 		+ " cross-validation was used. Both sets of results are included with the metadata. For a full description of CK+,"
 		+ " please see P. Lucey et al. (2010).")
-public abstract class AbstractCKDataset<KEY extends DatasetKey> extends MapBackedDataset<KEY, ListDataset<FImage>, FImage> implements
+public abstract class AbstractCKDataset<KEY extends DatasetKey> extends AbstractDataset<KEY> implements
 		HasFacialFeatures, HasInformation<KEY> {
 
 	private double[][]						matrixData;

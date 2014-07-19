@@ -6,6 +6,6 @@ import org.openimaj.image.FImage;
 
 import edu.ubbcluj.emotion.model.DatasetKey;
 
-public abstract class AbstractDataset<KEY extends DatasetKey> extends MapBackedDataset<KEY, ListDataset<FImage>, FImage> implements HasFacialFeatures {
+public abstract class AbstractDataset<KEY extends DatasetKey> extends MapBackedDataset<KEY, ListDataset<FImage>, FImage> implements MyGroupedDataset<KEY, FImage> {
 
 }

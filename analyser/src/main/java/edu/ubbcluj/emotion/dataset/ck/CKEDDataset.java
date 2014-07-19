@@ -61,6 +61,8 @@ public class CKEDDataset extends AbstractCKDataset<Emotion> {
 			return new Rectangle();
 		case RIGHT_EYE:
 			return new Rectangle();
+		case FULL_FACE:
+			return new Rectangle(0, 0, 80, 110);
 		}
 		return null;
 	}
