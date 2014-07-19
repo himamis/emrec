@@ -8,7 +8,7 @@ import edu.ubbcluj.emotion.model.ActionUnitSet;
 public class FacsTableModel extends AbstractTableModel {
 
 	private static final long	serialVersionUID	= 1L;
-	private ActionUnit[]		auArray;
+	private Object[]		auArray;
 
 	public int getColumnCount() {
 		return 3;
@@ -25,7 +25,7 @@ public class FacsTableModel extends AbstractTableModel {
 		if (auArray == null) {
 			return null;
 		}
-		ActionUnit au = auArray[row];
+		ActionUnit au = (ActionUnit) auArray[row];
 		if (col == 0) {
 			return au.getCode();
 		} else if (col == 1) {
@@ -51,7 +51,7 @@ public class FacsTableModel extends AbstractTableModel {
 	}
 
 	public void setAuList(ActionUnitSet aulist) {
-		this.auArray = (ActionUnit[]) aulist.getActionUnits().toArray();
+		this.auArray = aulist.getActionUnits().toArray();
 		fireTableDataChanged();
 	}
 
