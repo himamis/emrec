@@ -4,7 +4,6 @@ import org.openimaj.data.dataset.GroupedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.image.FImage;
 
-import edu.ubbcluj.emotion.EmotionRecogniser;
 import edu.ubbcluj.emotion.model.Emotion;
 
 public interface EmotionRecogniserProvider {

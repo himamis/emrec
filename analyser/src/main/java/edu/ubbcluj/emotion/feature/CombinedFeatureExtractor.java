@@ -1,9 +1,16 @@
-package edu.ubbcluj.emotion;
+package edu.ubbcluj.emotion.feature;
 
 import org.openimaj.feature.DoubleFV;
 import org.openimaj.feature.FeatureExtractor;
 import org.openimaj.image.FImage;
 
+/**
+ * This feature extractor combines two extractors: 
+ * first one preprocesses the image, and the second one 
+ * projects it and creates a double feature vector.
+ * @author bencze
+ *
+ */
 public class CombinedFeatureExtractor implements FeatureExtractor<DoubleFV, FImage> {
 
 	private FeatureExtractor<FImage, FImage>	facialFeatureExtractor;

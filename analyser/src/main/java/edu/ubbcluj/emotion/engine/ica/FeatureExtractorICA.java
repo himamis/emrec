@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion;
+package edu.ubbcluj.emotion.engine.ica;
 
 import org.fastica.math.Matrix;
 import org.openimaj.feature.DoubleFV;

@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion.engine;
+package edu.ubbcluj.emotion.engine.ica;
 
 import org.fastica.FastICAException;
 import org.openimaj.data.dataset.GroupedDataset;
@@ -11,10 +11,10 @@ import org.openimaj.ml.annotation.linear.LiblinearAnnotator.Mode;
 import com.davidsoergel.conja.RuntimeExecutionException;
 
 import de.bwaldvogel.liblinear.SolverType;
-import edu.ubbcluj.emotion.EmotionRecogniser;
-import edu.ubbcluj.emotion.FeatureExtractorICA;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
+import edu.ubbcluj.emotion.engine.EmotionRecogniser;
+import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.fastica.FastICA;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.GroupedDatasetHelper;

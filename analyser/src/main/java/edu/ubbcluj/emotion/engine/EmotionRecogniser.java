@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion;
+package edu.ubbcluj.emotion.engine;
 
 import java.util.List;
 import java.util.Set;

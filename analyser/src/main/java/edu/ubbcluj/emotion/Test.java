@@ -21,7 +21,7 @@ import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.dataset.ck.CKESDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
-import edu.ubbcluj.emotion.engine.PCAEmotionRecogniserProvider;
+import edu.ubbcluj.emotion.engine.pca.PCAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.Constants;
 

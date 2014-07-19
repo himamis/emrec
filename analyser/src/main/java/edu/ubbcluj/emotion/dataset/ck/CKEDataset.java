@@ -12,10 +12,9 @@ import edu.ubbcluj.emotion.dataset.DatasetInformation;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.model.Emotion;
 
-@DatasetDescription(name = "CK+", creator = "Lucey, P., Cohn, J. F., Kanade, T., Saragih, J., Ambadar, Z., & Matthews, I.", url = "http://www.pitt.edu/~emotion/ck-spread.htm"
-, description = "Cohn-Kanade database version 2, with cropped and aligned faces and resized to 80*110")
+@DatasetDescription(name = "CK+", creator = "Lucey, P., Cohn, J. F., Kanade, T., Saragih, J., Ambadar, Z., & Matthews, I.", url = "http://www.pitt.edu/~emotion/ck-spread.htm", description = "Cohn-Kanade database version 2, with cropped and aligned faces and resized to 80*110")
 public class CKEDataset extends AbstractCKDataset<Emotion> {
-	
+
 	@Override
 	protected ImageFilter getImageFilter(final Emotion key) {
 		return new ImageFilterAdapter() {
@@ -42,7 +41,7 @@ public class CKEDataset extends AbstractCKDataset<Emotion> {
 		for (Emotion emotion : Emotion.values()) {
 			set.add(emotion);
 		}
-		
+
 		return new DatasetInformation<Emotion>(80, 110, false, false, true, set);
 	}
 
@@ -61,6 +60,8 @@ public class CKEDataset extends AbstractCKDataset<Emotion> {
 			return new Rectangle();
 		case RIGHT_EYE:
 			return new Rectangle();
+		case FULL_FACE:
+			return new Rectangle(0, 0, 80, 110);
 		}
 		return null;
 	}

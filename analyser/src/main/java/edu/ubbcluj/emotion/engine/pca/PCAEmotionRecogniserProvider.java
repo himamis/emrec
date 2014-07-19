@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion.engine;
+package edu.ubbcluj.emotion.engine.pca;
 
 import org.fastica.EigenValueFilter;
 import org.openimaj.data.dataset.GroupedDataset;
@@ -8,22 +8,18 @@ import org.openimaj.feature.FeatureExtractor;
 import org.openimaj.image.FImage;
 import org.openimaj.image.feature.FImage2DoubleFV;
 import org.openimaj.math.geometry.shape.Rectangle;
-import org.openimaj.ml.annotation.Annotator;
 import org.openimaj.ml.annotation.BatchAnnotator;
 import org.openimaj.ml.annotation.linear.LiblinearAnnotator;
-import org.openimaj.ml.annotation.linear.LinearSVMAnnotator;
 import org.openimaj.ml.annotation.linear.LiblinearAnnotator.Mode;
-import org.openimaj.ml.annotation.svm.SVMAnnotator;
 
 import de.bwaldvogel.liblinear.SolverType;
-import edu.ubbcluj.emotion.CombinedFeatureExtractor;
-import edu.ubbcluj.emotion.EmotionRecogniser;
-import edu.ubbcluj.emotion.FacialFeaturesExtractor;
-import edu.ubbcluj.emotion.FeatureExtractorPCA;
-import edu.ubbcluj.emotion.ListFeatureExtractor;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
-import edu.ubbcluj.emotion.engine.pca.KEigenValueFilter;
+import edu.ubbcluj.emotion.engine.EmotionRecogniser;
+import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
+import edu.ubbcluj.emotion.feature.CombinedFeatureExtractor;
+import edu.ubbcluj.emotion.feature.FacialFeaturesExtractor;
+import edu.ubbcluj.emotion.feature.ListFeatureExtractor;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.pca.PCA;
 import edu.ubbcluj.emotion.util.GroupedDatasetHelper;

@@ -18,7 +18,7 @@ import org.openimaj.experiment.validation.ValidationRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
 import org.openimaj.image.FImage;
 
-import edu.ubbcluj.emotion.dataset.AbstractDataset;
+import edu.ubbcluj.emotion.engine.EmotionRecogniser;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 

@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion;
+package edu.ubbcluj.emotion.engine.pca;
 
 import static edu.ubbcluj.emotion.util.Math.subVectorP;
 
