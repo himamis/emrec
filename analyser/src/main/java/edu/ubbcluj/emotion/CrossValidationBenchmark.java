@@ -30,7 +30,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	private CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>>	crossValidator;
 
 	@IndependentVariable
-	private EmotionRecogniserProvider												engine;
+	private EmotionRecogniserProvider<?>											engine;
 
 	@IndependentVariable
 	private GroupedDataset<Emotion, ListDataset<FImage>, FImage>					dataset;
@@ -42,7 +42,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	protected AggregatedCMResult<Emotion>											result;
 
 	public CrossValidationBenchmark(CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator,
-			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider engine,
+			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider<?> engine,
 			BatchAnnotatorProvider<Emotion> annotatorProvider) {
 		this.crossValidator = crossValidator;
 		this.dataset = dataset;

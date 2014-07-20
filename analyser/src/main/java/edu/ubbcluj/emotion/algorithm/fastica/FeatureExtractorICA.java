@@ -1,6 +1,4 @@
-package edu.ubbcluj.emotion.engine.pca;
-
-import static edu.ubbcluj.emotion.util.Math.subVectorP;
+package edu.ubbcluj.emotion.algorithm.fastica;
 
 import org.fastica.math.Matrix;
 import org.openimaj.feature.DoubleFV;
@@ -9,22 +7,19 @@ import org.openimaj.image.FImage;
 
 import edu.ubbcluj.emotion.util.MatrixUtil;
 
-public class FeatureExtractorPCA implements FeatureExtractor<DoubleFV, FImage> {
+public class FeatureExtractorICA implements FeatureExtractor<DoubleFV, FImage> {
 
-	private double[]	meanValues;
-	private double[][]	eigenVectors;
-
-	public FeatureExtractorPCA(double[] meanValues, double[][] eigenVectors) {
-		this.meanValues = meanValues;
-		this.eigenVectors = eigenVectors;
+	private double[][] separatingMatrix;
+	
+	public FeatureExtractorICA(double[][] separatingMatrix) {
+		this.separatingMatrix = separatingMatrix;
 	}
 
 	@Override
 	public DoubleFV extractFeature(FImage object) {
 		double[] image = object.getDoublePixelVector();
 		double[][] data = MatrixUtil.convertRowVectorToColumnVector(image);
-		subVectorP(data, meanValues);
-		double[][] projection = Matrix.mult(eigenVectors, data);
+		double[][] projection = Matrix.mult(separatingMatrix, data);
 		double[] rowVector = MatrixUtil.convertColumnVectorToRowVector(projection);
 		return new DoubleFV(rowVector);
 	}
