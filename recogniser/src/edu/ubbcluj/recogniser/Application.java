@@ -13,6 +13,7 @@ public class Application {
 		VideoCapture video = new VideoCapture(640, 480);
 
 		VideoDisplay<MBFImage> vd = VideoDisplay.createVideoDisplay(video);
+		vd.displayMode(false);
 		vd.addVideoListener(new VideoListener());
 
 	}
