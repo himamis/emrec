@@ -12,9 +12,10 @@ import org.openimaj.data.dataset.MapBackedDataset;
 import org.openimaj.experiment.validation.DefaultValidationData;
 import org.openimaj.experiment.validation.ValidationData;
 import org.openimaj.experiment.validation.cross.CrossValidationIterable;
-import org.openimaj.experiment.validation.cross.CrossValidator;
 
-public class GroupedRandomSplitHalf<KEY, INSTANCE> implements CrossValidator<GroupedDataset<KEY, ListDataset<INSTANCE>, INSTANCE>> {
+import edu.ubbcluj.emotion.model.DatasetKey;
+
+public class GroupedRandomSplitHalf<KEY extends DatasetKey, INSTANCE> implements NamedCrossValidator<KEY, INSTANCE> {
 
 	private class GroupedRandomSplitHalfIterable implements CrossValidationIterable<GroupedDataset<KEY, ListDataset<INSTANCE>, INSTANCE>> {
 
@@ -109,6 +110,11 @@ public class GroupedRandomSplitHalf<KEY, INSTANCE> implements CrossValidator<Gro
 	@Override
 	public String toString() {
 		return "Split-Half cross validation for grouped data with " + iterations + " number of iterations.";
+	}
+
+	@Override
+	public String getName() {
+		return "CV_RS" + iterations;
 	}
 
 }

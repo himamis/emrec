@@ -49,21 +49,26 @@ public class CKEDataset extends AbstractCKDataset<Emotion> {
 	protected Rectangle constructFacialFeatureLocationObject(FacialFeature f) {
 		switch (f) {
 		case EYES:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case FOREHEAD:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case LEFT_EYE:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case MOUTH:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case NOSE:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case RIGHT_EYE:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case FULL_FACE:
 			return new Rectangle(0, 0, 80, 110);
 		}
 		return null;
+	}
+
+	@Override
+	public String getName() {
+		return "D_CKE";
 	}
 
 }

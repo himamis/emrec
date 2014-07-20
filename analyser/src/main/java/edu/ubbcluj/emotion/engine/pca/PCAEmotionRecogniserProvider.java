@@ -21,6 +21,7 @@ import edu.ubbcluj.emotion.feature.FacialFeaturesExtractor;
 import edu.ubbcluj.emotion.feature.ListFeatureExtractor;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.GroupedDatasetHelper;
+import edu.ubbcluj.emotion.util.StringHelper;
 
 public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 
@@ -31,15 +32,16 @@ public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 	public PCAEmotionRecogniserProvider(int k, AbstractDataset<Emotion> dataset, FacialFeature... features) {
 		this.k = k;
 		this.dataset = dataset;
-		this.features = features;
-	}
-
-	@Override
-	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData, BatchAnnotatorProvider<Emotion> annotatorProvider) {
 		// if no facial features were specified, use the full face
 		if (features == null || features.length == 0) {
 			features = new FacialFeature[] { FacialFeature.FULL_FACE };
 		}
+		this.features = features;
+	}
+
+	@Override
+	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData,
+			BatchAnnotatorProvider<Emotion> annotatorProvider) {
 		CombinedFeatureExtractor[] fes = new CombinedFeatureExtractor[features.length];
 		for (int i = 0; i < features.length; i++) {
 			FacialFeature feature = features[i];
@@ -62,17 +64,23 @@ public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 			CombinedFeatureExtractor fe = new CombinedFeatureExtractor(facialFeatureExtractor, featureExtractor);
 			fes[i] = fe;
 		}
-		
+
 		FeatureExtractor<DoubleFV, FImage> listFeatureExtractor = new ListFeatureExtractor(fes);
-		
+
 		BatchAnnotator<FImage, Emotion> annotator = annotatorProvider.getAnnotator(listFeatureExtractor);
-		
+
 		annotator.train(trainingData);
 		return new EmotionRecogniser(annotator);
 	}
 
 	@Override
 	public String toString() {
-		return "Emotion Recogniser using PCA (Principal Component Analisys) with " + k + " eigenvectors.";
+		return "Emotion Recogniser using PCA (Principal Component Analisys) with " + k + " eigenvectors. Facial features are: "
+				+ StringHelper.buildFacialFeaturesString(features);
+	}
+	
+	@Override
+	public String getName() {
+		return "A_PCA" +k;
 	}
 }

@@ -8,17 +8,15 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
-import org.openimaj.data.dataset.GroupedDataset;
-import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.ExperimentContext;
 import org.openimaj.experiment.ExperimentRunner;
-import org.openimaj.experiment.validation.cross.CrossValidator;
-import org.openimaj.experiment.validation.cross.GroupedLeaveOneOut;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
-import edu.ubbcluj.emotion.annotator.LinearSVMAnnotatorProvider;
+import edu.ubbcluj.emotion.annotator.LiblinearAnnotatorProvider;
+import edu.ubbcluj.emotion.crossvalidation.GroupedRandomSplitHalf;
+import edu.ubbcluj.emotion.crossvalidation.NamedCrossValidator;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.dataset.ck.CKESDataset;
@@ -26,10 +24,12 @@ import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.engine.pca.PCAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.Constants;
+import edu.ubbcluj.emotion.util.HasName;
+import edu.ubbcluj.emotion.util.StringHelper;
 
 public class Test {
 
-	private static Logger	logger		= org.slf4j.LoggerFactory.getLogger(Test.class);
+	private static Logger	logger	= org.slf4j.LoggerFactory.getLogger(Test.class);
 
 	public static void main(String[] args) {
 		initLogger();
@@ -37,9 +37,9 @@ public class Test {
 
 		System.out.println("Creating grouped dataset");
 		AbstractDataset<Emotion> dataset = new CKESDataset();
-		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedLeaveOneOut<>();
-		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
-		BatchAnnotatorProvider<Emotion> annotatorProvider = new LinearSVMAnnotatorProvider<Emotion>();
+		NamedCrossValidator<Emotion, FImage> crossValidator = new GroupedRandomSplitHalf<>(50);
+		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.FULL_FACE);
+		BatchAnnotatorProvider<Emotion> annotatorProvider = new LiblinearAnnotatorProvider<Emotion>();
 
 		System.out.println("Creating benchmark");
 		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine, annotatorProvider);
@@ -48,11 +48,7 @@ public class Test {
 		ExperimentContext experiment = ExperimentRunner.runExperiment(crossValidation);
 		String result = experiment.toString();
 
-		try {
-			FileUtils.writeStringToFile(new File("C:\\ckeSfffff50.txt"), result);
-		} catch (IOException e) {
-			System.out.println(result);
-		}
+		writeExperimentResults(result, dataset, crossValidator, engine, annotatorProvider);
 
 	}
 
@@ -85,7 +81,15 @@ public class Test {
 		fa2.activateOptions();
 
 		org.apache.log4j.Logger.getRootLogger().addAppender(fa2);
+	}
 
+	public static void writeExperimentResults(String result, HasName... hasNames) {
+		String fileName = StringHelper.buildExperimentName(hasNames);
+		try {
+			FileUtils.writeStringToFile(new File(Constants.EXPERIMENT_FOLDER + fileName), result);
+		} catch (IOException e) {
+			System.out.println(result);
+		}
 	}
 
 }

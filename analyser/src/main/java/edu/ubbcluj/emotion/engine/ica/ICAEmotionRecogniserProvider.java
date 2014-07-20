@@ -21,6 +21,7 @@ import edu.ubbcluj.emotion.feature.FacialFeaturesExtractor;
 import edu.ubbcluj.emotion.feature.ListFeatureExtractor;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.GroupedDatasetHelper;
+import edu.ubbcluj.emotion.util.StringHelper;
 
 public class ICAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 
@@ -30,16 +31,16 @@ public class ICAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 
 	public ICAEmotionRecogniserProvider(int numICs, AbstractDataset<Emotion> dataset, FacialFeature... features) {
 		this.numICs = numICs;
+		this.dataset = dataset;
+		if (features == null || features.length == 0) {
+			features = new FacialFeature[] { FacialFeature.FULL_FACE };
+		}
 		this.features = features;
 	}
 
 	@Override
 	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData,
 			BatchAnnotatorProvider<Emotion> annotatorProvider) {
-		// if no facial features were specified, use the full face
-		if (features == null || features.length == 0) {
-			features = new FacialFeature[] { FacialFeature.FULL_FACE };
-		}
 		CombinedFeatureExtractor[] fes = new CombinedFeatureExtractor[features.length];
 		for (int i = 0; i < features.length; i++) {
 			FacialFeature feature = features[i];
@@ -70,7 +71,12 @@ public class ICAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 
 	@Override
 	public String toString() {
-		return "Emotion Recogniser using ICA (Independent Component Analisys) with " + numICs + " independent components.";
+		return "Emotion Recogniser using ICA (Independent Component Analisys) with " + numICs + " independent components. Facial features are: "
+				+ StringHelper.buildFacialFeaturesString(features);
 	}
 
+	@Override
+	public String getName() {
+		return "A_ICA" + numICs;
+	}
 }

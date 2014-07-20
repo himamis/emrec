@@ -19,4 +19,9 @@ public class LinearSVMAnnotatorProvider<KEY extends DatasetKey> implements Batch
 	public String toString() {
 		return "Annotator based on a set of linear SVMs (one per annotation). The SVMs use the PEGASOS algorithm.";
 	}
+
+	@Override
+	public String getName() {
+		return "AN_SVM";
+	}
 }

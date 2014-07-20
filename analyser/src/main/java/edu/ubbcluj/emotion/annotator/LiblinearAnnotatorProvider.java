@@ -31,6 +31,10 @@ public class LiblinearAnnotatorProvider<KEY extends DatasetKey> implements Batch
 	public LiblinearAnnotatorProvider(Mode mode, SolverType solver, double C, double eps) {
 		this(mode, solver, C, eps, -1, false);
 	}
+	
+	public LiblinearAnnotatorProvider() {
+		this(Mode.MULTICLASS, SolverType.L2R_L2LOSS_SVC, 1.0, 0.00001);
+	}
 
 	@Override
 	public BatchAnnotator<FImage, KEY> getAnnotator(FeatureExtractor<DoubleFV, FImage> featureExtractor) {
@@ -40,5 +44,10 @@ public class LiblinearAnnotatorProvider<KEY extends DatasetKey> implements Batch
 	@Override
 	public String toString() {
 		return "Annotator based on linear classifiers learned using Liblinear.";
+	}
+
+	@Override
+	public String getName() {
+		return "AN_LL";
 	}
 }

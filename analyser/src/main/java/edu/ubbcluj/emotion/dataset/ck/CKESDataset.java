@@ -52,19 +52,23 @@ public class CKESDataset extends AbstractCKDataset<Emotion> {
 		case EYES:
 			return new Rectangle(0, 12, 50, 16);
 		case FOREHEAD:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case LEFT_EYE:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case MOUTH:
 			return new Rectangle(5, 40, 40, 20);
 		case NOSE:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case RIGHT_EYE:
-			return new Rectangle();
+			throw new UnsupportedOperationException();
 		case FULL_FACE:
 			return new Rectangle(0, 0, 50, 60);
 		}
 		return null;
 	}
 
+	@Override
+	public String getName() {
+		return "D_CKES";
+	}
 }

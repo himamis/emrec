@@ -60,4 +60,9 @@ public class KNNAnnotatorProvider<KEY extends DatasetKey> implements BatchAnnota
 		return "Annotator based on a multi-class k-nearest-neighbour classifier.";
 	}
 
+	@Override
+	public String getName() {
+		return "AN_KNN" + k;
+	}
+
 }

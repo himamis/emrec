@@ -4,6 +4,8 @@ import java.io.File;
 
 public abstract class Constants {
 	
+	public static final String EXPERIMENT_FOLDER = "c:\\Users\\bencze\\git\\emrec\\experiments\\";
+	
 	//public static final String HOME_FOLDER = "/home/himamis/documents/databases/";
 	public static final String HOME_FOLDER = "f:\\workspace\\databases\\";
 	public static final String ORIGINAL_FOLDER = "ck+";
