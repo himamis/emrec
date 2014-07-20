@@ -20,6 +20,7 @@ public class DifferenceEditor implements SequenceEditor {
 	public void doEdit(Image image, Landmarks landmarks) {
 		FImage fimage = image.getFImage();
 		fimage.subtractInplace(firstImage);
+		fimage.normalise();
 		image.setFImage(fimage);
 	}
 
