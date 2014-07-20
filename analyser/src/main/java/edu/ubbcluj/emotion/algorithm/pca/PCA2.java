@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion.pca;
+package edu.ubbcluj.emotion.algorithm.pca;
 
 import org.fastica.math.Matrix;
 import org.fastica.math.Vector;

@@ -10,6 +10,7 @@ import org.openimaj.image.feature.FImage2DoubleFV;
 import org.openimaj.math.geometry.shape.Rectangle;
 import org.openimaj.ml.annotation.BatchAnnotator;
 
+import edu.ubbcluj.emotion.algorithm.pca.PCA;
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
@@ -19,7 +20,6 @@ import edu.ubbcluj.emotion.feature.CombinedFeatureExtractor;
 import edu.ubbcluj.emotion.feature.FacialFeaturesExtractor;
 import edu.ubbcluj.emotion.feature.ListFeatureExtractor;
 import edu.ubbcluj.emotion.model.Emotion;
-import edu.ubbcluj.emotion.pca.PCA;
 import edu.ubbcluj.emotion.util.GroupedDatasetHelper;
 
 public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider {

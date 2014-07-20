@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion.pca;
+package edu.ubbcluj.emotion.algorithm.pca;
 
 import static edu.ubbcluj.emotion.util.Math.calculateRowMeanValues;
 import static edu.ubbcluj.emotion.util.Math.normalizeVector;

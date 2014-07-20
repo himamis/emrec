@@ -1,4 +1,4 @@
-package edu.ubbcluj.emotion.fastica;
+package edu.ubbcluj.emotion.algorithm.fastica;
 
 import org.fastica.BelowEVFilter;
 import org.fastica.ContrastFunction;
@@ -11,7 +11,7 @@ import org.fastica.math.EigenValueDecompositionSymm;
 import org.fastica.math.Matrix;
 import org.fastica.math.Vector;
 
-import edu.ubbcluj.emotion.pca.PCA2;
+import edu.ubbcluj.emotion.algorithm.pca.PCA2;
 
 /**
  * The <code>FastICA<code> class contains the main
