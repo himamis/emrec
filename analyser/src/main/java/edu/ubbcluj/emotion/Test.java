@@ -15,11 +15,11 @@ import org.slf4j.Logger;
 
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.annotator.LiblinearAnnotatorProvider;
-import edu.ubbcluj.emotion.crossvalidation.GroupedRandomSplitHalf;
 import edu.ubbcluj.emotion.crossvalidation.NamedCrossValidator;
+import edu.ubbcluj.emotion.crossvalidation.NamedGroupedLeaveOneOut;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
-import edu.ubbcluj.emotion.dataset.ck.CKESDataset;
+import edu.ubbcluj.emotion.dataset.ck.CKESDDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.engine.pca.PCAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
@@ -36,9 +36,9 @@ public class Test {
 		logger.error("test started");
 
 		System.out.println("Creating grouped dataset");
-		AbstractDataset<Emotion> dataset = new CKESDataset();
-		NamedCrossValidator<Emotion, FImage> crossValidator = new GroupedRandomSplitHalf<>(50);
-		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.FULL_FACE);
+		AbstractDataset<Emotion> dataset = new CKESDDataset();
+		NamedCrossValidator<Emotion, FImage> crossValidator = new NamedGroupedLeaveOneOut<>();
+		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
 		BatchAnnotatorProvider<Emotion> annotatorProvider = new LiblinearAnnotatorProvider<Emotion>();
 
 		System.out.println("Creating benchmark");
