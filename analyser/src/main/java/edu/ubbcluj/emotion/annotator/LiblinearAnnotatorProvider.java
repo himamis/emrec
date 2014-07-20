@@ -8,9 +8,9 @@ import org.openimaj.ml.annotation.linear.LiblinearAnnotator;
 import org.openimaj.ml.annotation.linear.LiblinearAnnotator.Mode;
 
 import de.bwaldvogel.liblinear.SolverType;
-import edu.ubbcluj.emotion.model.Emotion;
+import edu.ubbcluj.emotion.model.DatasetKey;
 
-public class LiblinearAnnotatorProvider implements BatchAnnotatorProvider {
+public class LiblinearAnnotatorProvider<KEY extends DatasetKey> implements BatchAnnotatorProvider<KEY> {
 
 	private Mode		mode;
 	private SolverType	solver;
@@ -33,7 +33,12 @@ public class LiblinearAnnotatorProvider implements BatchAnnotatorProvider {
 	}
 
 	@Override
-	public BatchAnnotator<FImage, Emotion> getAnnotator(FeatureExtractor<DoubleFV, FImage> featureExtractor) {
-		return new LiblinearAnnotator<FImage, Emotion>(featureExtractor, mode, solver, C, eps, bias, dense);
+	public BatchAnnotator<FImage, KEY> getAnnotator(FeatureExtractor<DoubleFV, FImage> featureExtractor) {
+		return new LiblinearAnnotator<FImage, KEY>(featureExtractor, mode, solver, C, eps, bias, dense);
+	}
+	
+	@Override
+	public String toString() {
+		return "Annotator based on linear classifiers learned using Liblinear.";
 	}
 }

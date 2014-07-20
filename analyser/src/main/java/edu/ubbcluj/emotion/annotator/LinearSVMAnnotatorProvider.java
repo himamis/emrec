@@ -6,13 +6,17 @@ import org.openimaj.image.FImage;
 import org.openimaj.ml.annotation.BatchAnnotator;
 import org.openimaj.ml.annotation.linear.LinearSVMAnnotator;
 
-import edu.ubbcluj.emotion.model.Emotion;
+import edu.ubbcluj.emotion.model.DatasetKey;
 
-public class LinearSVMAnnotatorProvider implements BatchAnnotatorProvider {
+public class LinearSVMAnnotatorProvider<KEY extends DatasetKey> implements BatchAnnotatorProvider<KEY> {
 
 	@Override
-	public BatchAnnotator<FImage, Emotion> getAnnotator(FeatureExtractor<DoubleFV, FImage> featureExtractor) {
-		return new LinearSVMAnnotator<FImage, Emotion>(featureExtractor);
+	public BatchAnnotator<FImage, KEY> getAnnotator(FeatureExtractor<DoubleFV, FImage> featureExtractor) {
+		return new LinearSVMAnnotator<FImage, KEY>(featureExtractor);
 	}
 
+	@Override
+	public String toString() {
+		return "Annotator based on a set of linear SVMs (one per annotation). The SVMs use the PEGASOS algorithm.";
+	}
 }

@@ -11,6 +11,7 @@ import org.openimaj.ml.annotation.linear.LiblinearAnnotator.Mode;
 import com.davidsoergel.conja.RuntimeExecutionException;
 
 import de.bwaldvogel.liblinear.SolverType;
+import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.engine.EmotionRecogniser;
@@ -31,7 +32,7 @@ public class ICAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 	}
 
 	@Override
-	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData) {
+	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData, BatchAnnotatorProvider<Emotion> annotatorProvider) {
 		double[][] data = GroupedDatasetHelper.<Emotion, FImage> getMatrixData(trainingData, FImage2DoubleFV.INSTANCE);
 		double[][] transposedData = org.fastica.math.Matrix.transpose(data);
 		try {

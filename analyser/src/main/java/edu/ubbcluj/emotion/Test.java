@@ -17,6 +17,8 @@ import org.openimaj.experiment.validation.cross.GroupedLeaveOneOut;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
+import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
+import edu.ubbcluj.emotion.annotator.LinearSVMAnnotatorProvider;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.dataset.ck.CKESDataset;
@@ -36,11 +38,11 @@ public class Test {
 		System.out.println("Creating grouped dataset");
 		AbstractDataset<Emotion> dataset = new CKESDataset();
 		CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator = new GroupedLeaveOneOut<>();
-
 		EmotionRecogniserProvider engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
+		BatchAnnotatorProvider<Emotion> annotatorProvider = new LinearSVMAnnotatorProvider<Emotion>();
 
 		System.out.println("Creating benchmark");
-		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine);
+		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine, annotatorProvider);
 
 		System.out.println("Running experiment");
 		ExperimentContext experiment = ExperimentRunner.runExperiment(crossValidation);

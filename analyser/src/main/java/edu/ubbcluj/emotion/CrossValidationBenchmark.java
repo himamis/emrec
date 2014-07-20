@@ -18,6 +18,7 @@ import org.openimaj.experiment.validation.ValidationRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
 import org.openimaj.image.FImage;
 
+import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.engine.EmotionRecogniser;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
@@ -26,22 +27,27 @@ import edu.ubbcluj.emotion.model.Emotion;
 public class CrossValidationBenchmark implements RunnableExperiment {
 
 	@IndependentVariable
-	protected CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>>	crossValidator;
+	private CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>>	crossValidator;
 
 	@IndependentVariable
-	protected EmotionRecogniserProvider												engine;
+	private EmotionRecogniserProvider												engine;
 
 	@IndependentVariable
-	protected GroupedDataset<Emotion, ListDataset<FImage>, FImage>					dataset;
+	private GroupedDataset<Emotion, ListDataset<FImage>, FImage>					dataset;
+
+	@IndependentVariable
+	private BatchAnnotatorProvider<Emotion>											annotatorProvider;
 
 	@DependentVariable
 	protected AggregatedCMResult<Emotion>											result;
 
 	public CrossValidationBenchmark(CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator,
-			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider engine) {
+			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider engine,
+			BatchAnnotatorProvider<Emotion> annotatorProvider) {
 		this.crossValidator = crossValidator;
 		this.dataset = dataset;
 		this.engine = engine;
+		this.annotatorProvider = annotatorProvider;
 	}
 
 	@Override
@@ -59,7 +65,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 					@Override
 					public CMResult<Emotion> evaluate(GroupedDataset<Emotion, ListDataset<FImage>, FImage> training,
 							GroupedDataset<Emotion, ListDataset<FImage>, FImage> validation) {
-						final EmotionRecogniser recogniser = engine.create(training);
+						final EmotionRecogniser recogniser = engine.create(training, annotatorProvider);
 
 						final ClassificationEvaluator<CMResult<Emotion>, Emotion, FImage> eval = new ClassificationEvaluator<>(recogniser,
 								validation, new CMAnalyser<FImage, Emotion>(CMAnalyser.Strategy.SINGLE));

@@ -9,10 +9,8 @@ import org.openimaj.image.FImage;
 import org.openimaj.image.feature.FImage2DoubleFV;
 import org.openimaj.math.geometry.shape.Rectangle;
 import org.openimaj.ml.annotation.BatchAnnotator;
-import org.openimaj.ml.annotation.linear.LiblinearAnnotator;
-import org.openimaj.ml.annotation.linear.LiblinearAnnotator.Mode;
 
-import de.bwaldvogel.liblinear.SolverType;
+import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.engine.EmotionRecogniser;
@@ -37,7 +35,7 @@ public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 	}
 
 	@Override
-	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData) {
+	public EmotionRecogniser create(GroupedDataset<Emotion, ListDataset<FImage>, FImage> trainingData, BatchAnnotatorProvider<Emotion> annotatorProvider) {
 		// if no facial features were specified, use the full face
 		if (features == null || features.length == 0) {
 			features = new FacialFeature[] { FacialFeature.FULL_FACE };
@@ -66,8 +64,8 @@ public class PCAEmotionRecogniserProvider implements EmotionRecogniserProvider {
 		}
 		
 		FeatureExtractor<DoubleFV, FImage> listFeatureExtractor = new ListFeatureExtractor(fes);
-		BatchAnnotator<FImage, Emotion> annotator = new LiblinearAnnotator<FImage, Emotion>(listFeatureExtractor, Mode.MULTICLASS,
-				SolverType.L2R_L2LOSS_SVC, 1.0, 0.00001);
+		
+		BatchAnnotator<FImage, Emotion> annotator = annotatorProvider.getAnnotator(listFeatureExtractor);
 		
 		annotator.train(trainingData);
 		return new EmotionRecogniser(annotator);
