@@ -25,8 +25,8 @@ import edu.ubbcluj.emotion.model.Sequence;
 import edu.ubbcluj.emotion.model.Subject;
 
 public class ImageSequenceEditorRunner {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ImageSequenceEditorRunner.class);
+
+	private static final Logger	logger	= LoggerFactory.getLogger(ImageSequenceEditorRunner.class);
 
 	public static void runEditor(String sourceFolder, String destinationFolder, final SequenceEditor editor) {
 		ResourceManagerFactory rmf = new FileResourceManagerFactory();
@@ -61,7 +61,10 @@ public class ImageSequenceEditorRunner {
 					@Override
 					public Void apply(Integer i) {
 						Image image = imageSequence.get(i);
-						Landmarks landmarks = landmarksSequence.get(i);
+						Landmarks landmarks = null;
+						if (landmarksSequence != null) {
+							landmarks = landmarksSequence.get(i);
+						}
 						editor.doEdit(image, landmarks);
 						return null;
 					}
