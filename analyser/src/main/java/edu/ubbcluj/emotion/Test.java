@@ -13,7 +13,7 @@ import org.openimaj.experiment.ExperimentRunner;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
-import edu.ubbcluj.emotion.algorithm.pca.PCA;
+import edu.ubbcluj.emotion.algorithm.pca.KPCA;
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.annotator.LiblinearAnnotatorProvider;
 import edu.ubbcluj.emotion.crossvalidation.NamedCrossValidator;
@@ -39,7 +39,7 @@ public class Test {
 		System.out.println("Creating grouped dataset");
 		AbstractDataset<Emotion> dataset = new CKESDDataset();
 		NamedCrossValidator<Emotion, FImage> crossValidator = new NamedGroupedLeaveOneOut<>();
-		EmotionRecogniserProvider<PCA> engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
+		EmotionRecogniserProvider<KPCA> engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
 		BatchAnnotatorProvider<Emotion> annotatorProvider = new LiblinearAnnotatorProvider<Emotion>();
 
 		System.out.println("Creating benchmark");

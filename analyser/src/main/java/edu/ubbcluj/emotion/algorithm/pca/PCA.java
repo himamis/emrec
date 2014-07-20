@@ -1,32 +1,45 @@
 package edu.ubbcluj.emotion.algorithm.pca;
 
-import static edu.ubbcluj.emotion.util.Math.calculateRowMeanValues;
-import static edu.ubbcluj.emotion.util.Math.normalizeVector;
-import static edu.ubbcluj.emotion.util.Math.subFromRowsP;
-
-import org.fastica.EigenValueFilter;
 import org.fastica.math.Matrix;
-import org.jblas.DoubleMatrix;
-import org.jblas.Eigen;
-import org.openimaj.feature.DoubleFV;
-import org.openimaj.feature.FeatureExtractor;
-import org.openimaj.image.FImage;
+import org.fastica.math.Vector;
 
-import edu.ubbcluj.emotion.algorithm.Algorithm;
-import edu.ubbcluj.emotion.util.QuickSortDualPivot;
+import edu.ubbcluj.emotion.algorithm.util.EigenValueDecompositionSymmetric;
 
-public class PCA implements Algorithm {
+/**
+ * This class computes the Principal Component Analysis of a given set of
+ * vectors.
+ * 
+ * @author Michael Lambertz
+ */
 
-	private double[]			meanValues;
-	private double[]			eigenValues;
-	private double[][]			eigenVectors;
+public class PCA {
 
-	private double[][]			vectorsZeroMean;
+	private double[]	meanValues;
+	private double[][]	vectorsZeroMean;
+	private double[][]	covarianceMatrix;
+	private double[]	eigenValues;
+	private double[][]	eigenVectors;
+	private double[][]	resVectors;
 
-	private EigenValueFilter	evFilter;
-
-	public PCA(EigenValueFilter evFilter) {
-		this.evFilter = evFilter;
+	/**
+	 * This constructor computes the Principal Component Analysis of the given
+	 * set of vectors.
+	 * 
+	 * @param inVectors
+	 *            the given set of vectors
+	 */
+	public PCA(double[][] inVectors) {
+		// calculate the mean along each row
+		meanValues = calcMeanValues(inVectors);
+		// subtract the mean vector from each data vector
+		vectorsZeroMean = Vector.addVecToSet(inVectors, Vector.scale(-1.0, meanValues));
+		// calculate the covariance matrix
+		covarianceMatrix = Matrix.scale(Matrix.square(vectorsZeroMean), 1.0 / Matrix.getNumOfColumns(inVectors));
+		// calculate the eigenvalue decomposition
+		EigenValueDecompositionSymmetric eig = new EigenValueDecompositionSymmetric(covarianceMatrix);
+		eigenValues = eig.getEigenValues();
+		eigenVectors = eig.getEigenVectors();
+		resVectors = Matrix.mult(Matrix.transpose(eigenVectors), vectorsZeroMean);
 	}
 
 	/**
@@ -35,7 +48,7 @@ public class PCA implements Algorithm {
 	 * @return the eigenvalues of the covariance matrix
 	 */
 	public double[] getEigenValues() {
-		return eigenValues;
+		return (eigenValues);
 	}
 
 	/**
@@ -44,7 +57,7 @@ public class PCA implements Algorithm {
 	 * @return the eigenvectors of the covariance matrix
 	 */
 	public double[][] getEigenVectors() {
-		return eigenVectors;
+		return (eigenVectors);
 	}
 
 	/**
@@ -53,69 +66,46 @@ public class PCA implements Algorithm {
 	 * @return the mean vector
 	 */
 	public double[] getMeanValues() {
-		return meanValues;
-	}
-
-	public double[][] getVectorsZeroMean() {
-		return vectorsZeroMean;
+		return (meanValues);
 	}
 
 	/**
-	 * Calculates, sorts and normalizes eigenvectors calculated from the input
-	 * vectors
+	 * Returns the given vectors without mean.
+	 * 
+	 * @return the zero-mean vectors
+	 */
+	public double[][] getVectorsZeroMean() {
+		return (vectorsZeroMean);
+	}
+
+	/**
+	 * Returns the set of vectors, which results after the Principal Component
+	 * Analysis.
+	 * 
+	 * @return the resulting set of vectors
+	 */
+	public double[][] getResultingVectors() {
+		return (resVectors);
+	}
+
+	/**
+	 * Calculates the mean vector from a set of vectors.
 	 * 
 	 * @param inVectors
-	 *            contains the data in rows
+	 *            the set of vectors
+	 * @return the resulting mean vector
 	 */
-	@Override
-	public void train(double[][] inVectors) {
-		double[][] data = Matrix.clone(inVectors);
-
-		centerData(inVectors);
-
-		DoubleMatrix A = new DoubleMatrix(data);
-		DoubleMatrix I = A.transpose();
-
-		DoubleMatrix AT = I;
-
-		DoubleMatrix C = A.mmul(AT).muli(1.0 / data[0].length);
-
-		final DoubleMatrix[] a = Eigen.symmetricEigenvectors(C);
-		eigenValues = new double[a[1].columns];
-
-		for (int i = 0; i < a[1].columns; i++) {
-			eigenValues[i] = a[1].get(i, i);
+	private static double[] calcMeanValues(double[][] inVectors) {
+		int m = Matrix.getNumOfRows(inVectors);
+		int n = Matrix.getNumOfColumns(inVectors);
+		double[] meanValues = Vector.newVector(m);
+		for (int i = 0; i < m; ++i) {
+			meanValues[i] = 0.0;
+			for (int j = 0; j < n; ++j)
+				meanValues[i] += inVectors[i][j];
+			meanValues[i] /= n;
 		}
-		final double[][] v = a[0].toArray2();
-		eigenVectors = new double[v.length][];
-
-		final double[][] ATd = AT.toArray2();
-
-		for (int i = 0; i < v.length; i++) {
-			eigenVectors[i] = Matrix.mult(ATd, v[i]);
-		}
-
-		QuickSortDualPivot qs = new QuickSortDualPivot();
-		qs.sort(eigenVectors, eigenValues);
-
-		for (int i = 0; i < eigenVectors.length; i++) {
-			normalizeVector(eigenVectors[i]);
-		}
-		
-		evFilter.passEigenValues(eigenValues, eigenVectors);
-		
-		eigenValues = evFilter.getEigenValues();
-		eigenVectors = evFilter.getEigenVectors();
-	}
-
-	private void centerData(double[][] matrix) {
-		meanValues = calculateRowMeanValues(matrix);
-		subFromRowsP(matrix, meanValues);
-	}
-
-	@Override
-	public FeatureExtractor<DoubleFV, FImage> getFeatureExtractor() {
-		return new FeatureExtractorPCA(meanValues, eigenVectors);
+		return (meanValues);
 	}
 
 }

@@ -6,7 +6,6 @@ import org.fastica.EigenValueFilter;
 import org.fastica.FastICAConfig;
 import org.fastica.FastICAException;
 import org.fastica.TanhCFunction;
-import org.fastica.math.EigenValueDecompositionSymm;
 import org.fastica.math.Matrix;
 import org.fastica.math.Vector;
 import org.openimaj.feature.DoubleFV;
@@ -15,7 +14,8 @@ import org.openimaj.image.FImage;
 
 import edu.ubbcluj.emotion.algorithm.Algorithm;
 import edu.ubbcluj.emotion.algorithm.AlgorithmException;
-import edu.ubbcluj.emotion.algorithm.pca.PCA2;
+import edu.ubbcluj.emotion.algorithm.pca.PCA;
+import edu.ubbcluj.emotion.algorithm.util.EigenValueDecompositionSymmetric;
 
 /**
  * The <code>FastICA<code> class contains the main
@@ -134,10 +134,10 @@ public class FastICA implements Algorithm {
 	 * @return the resulting matrix
 	 */
 	private static double[][] powerSymmMatrix(double[][] inMatrix, double power) {
-		EigenValueDecompositionSymm eigenDeco = new EigenValueDecompositionSymm(inMatrix);
+		EigenValueDecompositionSymmetric eig = new EigenValueDecompositionSymmetric(inMatrix);
 		int m = Matrix.getNumOfRows(inMatrix);
-		double[][] eigenVectors = eigenDeco.getEigenVectors();
-		double[] eigenValues = eigenDeco.getEigenValues();
+		double[][] eigenVectors = eig.getEigenVectors();
+		double[] eigenValues = eig.getEigenValues();
 		for (int i = 0; i < m; ++i) {
 			eigenValues[i] = Math.pow(eigenValues[i], power);
 		}
@@ -213,9 +213,7 @@ public class FastICA implements Algorithm {
 		double[][] inVectors = Matrix.transpose(data);
 		this.inVectors = inVectors;
 		this.icVectors = null;
-		System.out.println("Start PCA");
-		PCA2 pca = new PCA2(inVectors);
-		System.out.println("Stop PCA");
+		PCA pca = new PCA(inVectors);
 		vectorsZeroMean = pca.getVectorsZeroMean();
 		double[] eigenValues = pca.getEigenValues();
 		double[][] eigenVectors = pca.getEigenVectors();
