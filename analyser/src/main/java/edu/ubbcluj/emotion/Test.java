@@ -84,9 +84,16 @@ public class Test {
 	}
 
 	public static void writeExperimentResults(String result, HasName... hasNames) {
-		String fileName = StringHelper.buildExperimentName(hasNames);
+		int i = 0;
+		File file = null;
+		do {
+			String fileName = StringHelper.buildExperimentName(i, hasNames);
+			file = new File(Constants.EXPERIMENT_FOLDER + fileName);
+			i++;
+		} while (file.exists());
+
 		try {
-			FileUtils.writeStringToFile(new File(Constants.EXPERIMENT_FOLDER + fileName), result);
+			FileUtils.writeStringToFile(file, result);
 		} catch (IOException e) {
 			System.out.println(result);
 		}

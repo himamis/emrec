@@ -15,7 +15,7 @@ public class StringHelper {
 		return builder.toString();
 	}
 
-	public static String buildExperimentName(HasName[] hasNames) {
+	public static String buildExperimentName(int index, HasName[] hasNames) {
 		StringBuilder builder = new StringBuilder();
 		for (HasName hasName : hasNames) {
 			builder.append(hasName.getName() + "-");
@@ -23,6 +23,7 @@ public class StringHelper {
 		if (builder.length() >= 1) {
 			builder.setLength(builder.length() - 1);
 		}
+		builder.append(String.format("%03d", index));
 		builder.append(".txt");
 		return builder.toString();
 	}
