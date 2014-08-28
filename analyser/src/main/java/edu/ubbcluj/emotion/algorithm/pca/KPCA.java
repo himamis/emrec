@@ -71,7 +71,7 @@ public class KPCA implements Algorithm {
 	public void train(double[][] inVectors) {
 		double[][] data = Matrix.clone(inVectors);
 
-		centerData(inVectors);
+		centerData(data);
 
 		DoubleMatrix A = new DoubleMatrix(data);
 		DoubleMatrix I = A.transpose();

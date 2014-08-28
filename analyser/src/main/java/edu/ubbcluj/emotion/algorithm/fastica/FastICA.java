@@ -26,20 +26,22 @@ import edu.ubbcluj.emotion.algorithm.util.EigenValueDecompositionSymmetric;
 public class FastICA implements Algorithm {
 	// asssume the data is a sequence of column vectors
 
-	private double[][]	inVectors;
+	private double[][]			inVectors;
 	// private double[] meanValues;
-	private double[][]	vectorsZeroMean;
-	private double[][]	whiteningMatrix;
-	private double[][]	dewhiteningMatrix;
-	private double[][]	whitenedVectors;
-	private double[][]	weightMatrix;
-	private double[][]	mixingMatrix;
-	private double[][]	separatingMatrix;
-	private double[][]	icVectors;
-	
-	private FastICAConfig config;
-	private ContrastFunction conFunction; 
-	private EigenValueFilter evFilter;
+	private double[][]			vectorsZeroMean;
+	private double[][]			whiteningMatrix;
+	private double[][]			dewhiteningMatrix;
+	private double[][]			whitenedVectors;
+	private double[][]			weightMatrix;
+	private double[][]			mixingMatrix;
+	private double[][]			separatingMatrix;
+	private double[][]			icVectors;
+	private double[]			eigenValues;
+	private double[][]			eigenVectors;
+
+	private FastICAConfig		config;
+	private ContrastFunction	conFunction;
+	private EigenValueFilter	evFilter;
 
 	/**
 	 * This constructor calls the FastICA algorithm. Note that the constructor
@@ -209,14 +211,14 @@ public class FastICA implements Algorithm {
 	}
 
 	@Override
-	public void train(double[][] data) throws AlgorithmException{
+	public void train(double[][] data) throws AlgorithmException {
 		double[][] inVectors = Matrix.transpose(data);
 		this.inVectors = inVectors;
 		this.icVectors = null;
 		PCA pca = new PCA(inVectors);
 		vectorsZeroMean = pca.getVectorsZeroMean();
-		double[] eigenValues = pca.getEigenValues();
-		double[][] eigenVectors = pca.getEigenVectors();
+		eigenValues = pca.getEigenValues();
+		eigenVectors = pca.getEigenVectors();
 		evFilter.passEigenValues(eigenValues, eigenVectors);
 		eigenValues = evFilter.getEigenValues();
 		if ((eigenValues == null) || (eigenValues.length == 0)) {

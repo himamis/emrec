@@ -32,7 +32,8 @@ public class PCA {
 		// calculate the mean along each row
 		meanValues = calcMeanValues(inVectors);
 		// subtract the mean vector from each data vector
-		vectorsZeroMean = Vector.addVecToSet(inVectors, Vector.scale(-1.0, meanValues));
+		vectorsZeroMean = //inVectors.clone();
+				Vector.addVecToSet(inVectors, Vector.scale(-1.0, meanValues));
 		// calculate the covariance matrix
 		covarianceMatrix = Matrix.scale(Matrix.square(vectorsZeroMean), 1.0 / Matrix.getNumOfColumns(inVectors));
 		// calculate the eigenvalue decomposition
@@ -46,7 +47,7 @@ public class PCA {
 	 * Returns the eigenvalues of the computed covariance matrix.
 	 * 
 	 * @return the eigenvalues of the covariance matrix
-	 */
+	 */	
 	public double[] getEigenValues() {
 		return (eigenValues);
 	}
