@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.openimaj.image.DisplayUtilities;
 import org.openimaj.image.FImage;
 import org.openimaj.image.ImageUtilities;
 
@@ -29,7 +30,7 @@ public class ImageUtil {
 	private static float[] convertDoubleVectorToFloatVector(double[] array) {
 		float[] floatArray = new float[array.length];
 		for (int i = 0; i < array.length; i++) {
-			floatArray[i] = (float) array[i];
+			floatArray[i] = (float) java.lang.Math.round(array[i]);
 		}
 		return floatArray;
 	}
@@ -69,6 +70,11 @@ public class ImageUtil {
 		FImage image = new FImage(floatArray, w, h);
 		return ImageUtilities.createBufferedImage(image);
 	}
+	
+	public static FImage convertRowVectorToFImage(double[] array, int w, int h) {
+		float[] floatArray = convertDoubleVectorToFloatVector(array);
+		return new FImage(floatArray, w, h);
+	}
 
 	public static BufferedImage convertImageToGrayscale(BufferedImage image) {
 		BufferedImage ret = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
@@ -96,17 +102,19 @@ public class ImageUtil {
 			vector[i] -= min;
 		}
 		double max = max(vector);
-		double scale = 256.0 / max;
+		double scale = 255.0 / max;
 		for (int i = 0; i < vector.length; i++) {
 			vector[i] *= scale;
 		}
+		FImage image = convertRowVectorToFImage(vector, w, h);
+		DisplayUtilities.display(image);/*
 		BufferedImage image = convertRowVectorToImage(vector, w, h);
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.getContentPane().add(new JLabel(new ImageIcon(image)));
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		frame.setVisible(true);*/
 	}
 
 	public static void showImage(BufferedImage image) {
