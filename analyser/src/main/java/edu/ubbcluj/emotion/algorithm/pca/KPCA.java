@@ -74,9 +74,7 @@ public class KPCA implements Algorithm {
 		centerData(data);
 
 		DoubleMatrix A = new DoubleMatrix(data);
-		DoubleMatrix I = A.transpose();
-
-		DoubleMatrix AT = I;
+		DoubleMatrix AT = A.transpose();
 
 		DoubleMatrix C = A.mmul(AT).muli(1.0 / data[0].length);
 
