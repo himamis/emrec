@@ -6,8 +6,9 @@ import org.openimaj.image.FImage;
 
 /**
  * This feature extractor combines two extractors: 
- * first one preprocesses the image, and the second one 
- * projects it and creates a double feature vector.
+ * first one pre-processes the image, and the second one 
+ * projects it onto a subspace of the original image 
+ * and creates a double feature vector.
  * @author bencze
  *
  */

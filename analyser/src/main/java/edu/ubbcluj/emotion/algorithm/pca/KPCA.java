@@ -16,7 +16,7 @@ import edu.ubbcluj.emotion.algorithm.util.EigenValueDecompositionSymmetric;
 import edu.ubbcluj.emotion.util.QuickSortDualPivot;
 
 public class KPCA implements Algorithm {
-
+// ..
 	private double[]			meanValues;
 	private double[]			eigenValues;
 	private double[][]			eigenVectors;
@@ -76,9 +76,11 @@ public class KPCA implements Algorithm {
 		DoubleMatrix A = new DoubleMatrix(data);
 		DoubleMatrix AT = A.transpose();
 
+		// covariance matrix
 		DoubleMatrix C = A.mmul(AT).muli(1.0 / data[0].length);
 
-		EigenValueDecompositionSymmetric eig = new EigenValueDecompositionSymmetric(C);
+		EigenValueDecompositionSymmetric eig = 
+				new EigenValueDecompositionSymmetric(C);
 		eigenValues = eig.getEigenValues();
 		final double[][] v = eig.getEigenVectors();
 		eigenVectors = new double[v.length][];
@@ -92,6 +94,7 @@ public class KPCA implements Algorithm {
 		QuickSortDualPivot qs = new QuickSortDualPivot();
 		qs.sort(eigenVectors, eigenValues);
 
+		// normalization of vectors
 		for (int i = 0; i < eigenVectors.length; i++) {
 			normalizeVector(eigenVectors[i]);
 		}
@@ -109,6 +112,7 @@ public class KPCA implements Algorithm {
 
 	@Override
 	public FeatureExtractor<DoubleFV, FImage> getFeatureExtractor() {
+		assert(meanValues != null && eigenVectors != null);
 		return new FeatureExtractorPCA(meanValues, eigenVectors);
 	}
 

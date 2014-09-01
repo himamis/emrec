@@ -357,6 +357,7 @@ public class FastICA implements Algorithm {
 
 	@Override
 	public FeatureExtractor<DoubleFV, FImage> getFeatureExtractor() {
+		assert(separatingMatrix != null);
 		return new FeatureExtractorICA(separatingMatrix);
 	}
 }

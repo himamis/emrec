@@ -47,7 +47,7 @@ public abstract class EmotionRecogniserProvider<A extends Algorithm> implements 
 			FeatureExtractor<FImage, FImage> facialFeatureExtractor = new FacialFeaturesExtractor(rectangle);
 			GroupedDataset<Emotion, ListDataset<FImage>, FImage> featureDataset = GroupedDatasetHelper.extractFeature(trainingData,
 					facialFeatureExtractor);
-			// run pca on the dataset
+			// run the algorithm on the dataset
 			double[][] data = GroupedDatasetHelper.getMatrixData(featureDataset, FImage2DoubleFV.INSTANCE);
 			A algorithm = getAlgorithm();
 			try {
@@ -55,7 +55,7 @@ public abstract class EmotionRecogniserProvider<A extends Algorithm> implements 
 			} catch (AlgorithmException ex) {
 				throw new RuntimeException(ex);
 			}
-			// create the feature extractors and train the annotators
+			// create the feature extractor
 			FeatureExtractor<DoubleFV, FImage> featureExtractor = algorithm.getFeatureExtractor();
 			CombinedFeatureExtractor fe = new CombinedFeatureExtractor(facialFeatureExtractor, featureExtractor);
 			fes[i] = fe;
