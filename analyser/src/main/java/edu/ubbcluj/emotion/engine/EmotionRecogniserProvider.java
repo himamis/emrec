@@ -22,7 +22,7 @@ import edu.ubbcluj.emotion.util.GroupedDatasetHelper;
 import edu.ubbcluj.emotion.util.HasName;
 import edu.ubbcluj.emotion.util.StringHelper;
 
-public abstract class EmotionRecogniserProvider<A extends Algorithm> implements HasName {
+public abstract class EmotionRecogniserProvider<ALGO extends Algorithm> implements HasName {
 
 	private FacialFeature[]				features;
 	private AbstractDataset<Emotion>	dataset;
@@ -49,7 +49,7 @@ public abstract class EmotionRecogniserProvider<A extends Algorithm> implements 
 					facialFeatureExtractor);
 			// run the algorithm on the dataset
 			double[][] data = GroupedDatasetHelper.getMatrixData(featureDataset, FImage2DoubleFV.INSTANCE);
-			A algorithm = getAlgorithm();
+			ALGO algorithm = getAlgorithm();
 			try {
 				algorithm.train(data);
 			} catch (AlgorithmException ex) {
@@ -69,7 +69,7 @@ public abstract class EmotionRecogniserProvider<A extends Algorithm> implements 
 		return new EmotionRecogniser(annotator);
 	}
 
-	protected abstract A getAlgorithm();
+	protected abstract ALGO getAlgorithm();
 
 	@Override
 	public String toString() {
