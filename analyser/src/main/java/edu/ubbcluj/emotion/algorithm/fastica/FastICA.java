@@ -19,9 +19,8 @@ import edu.ubbcluj.emotion.algorithm.util.EigenValueDecompositionSymmetric;
 
 /**
  * The <code>FastICA<code> class contains the main
- * FastICA algorithm.
- * 
- * @author Michael Lambertz
+ * FastICA algorithm. Based on the implementation
+ * by Michael Lambertz.
  */
 public class FastICA implements Algorithm {
 	// asssume the data is a sequence of column vectors

@@ -1,0 +1,13 @@
+/common/src/main/java/edu/ubbcluj/emotion/model/TriangularFaceModel.java
+/common/src/main/java/edu/ubbcluj/emotion/model/Subject.java
+/common/src/main/java/edu/ubbcluj/emotion/model/Sequence.java
+/common/src/main/java/edu/ubbcluj/emotion/model/MyPoint2D.java
+/common/src/main/java/edu/ubbcluj/emotion/model/LandmarksSequence.java
+/common/src/main/java/edu/ubbcluj/emotion/model/Landmarks.java
+/common/src/main/java/edu/ubbcluj/emotion/model/ImageSequence.java
+/common/src/main/java/edu/ubbcluj/emotion/model/Image.java
+/common/src/main/java/edu/ubbcluj/emotion/model/Emotion.java
+/common/src/main/java/edu/ubbcluj/emotion/model/DatasetKey.java
+/common/src/main/java/edu/ubbcluj/emotion/model/ActionUnitSet.java
+/common/src/main/java/edu/ubbcluj/emotion/model/ActionUnitDescription.java
+/common/src/main/java/edu/ubbcluj/emotion/model/ActionUnit.java

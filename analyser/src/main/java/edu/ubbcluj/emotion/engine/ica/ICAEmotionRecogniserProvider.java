@@ -5,6 +5,7 @@ import org.fastica.CompositeEVFilter;
 import org.fastica.FastICAConfig;
 import org.fastica.SortingEVFilter;
 import org.fastica.TanhCFunction;
+import org.fastica.FastICAConfig.Approach;
 
 import edu.ubbcluj.emotion.algorithm.fastica.FastICA;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
@@ -37,7 +38,7 @@ public class ICAEmotionRecogniserProvider extends EmotionRecogniserProvider<Fast
 		CompositeEVFilter evFilter = new CompositeEVFilter();
 		evFilter.add(new BelowEVFilter(1.0e-12, false));
 		evFilter.add(new SortingEVFilter(true, true));
-		return new FastICA(new FastICAConfig(numICs),
+		return new FastICA(new FastICAConfig(numICs, Approach.SYMMETRIC, 1.0, 1.0e-12, 1000, null),
 				//new GaussCFunction(1.0), 
 				 new TanhCFunction(1.0),
 				evFilter);

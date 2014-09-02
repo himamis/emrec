@@ -23,7 +23,7 @@ import edu.ubbcluj.emotion.util.HasName;
 import edu.ubbcluj.emotion.util.StringHelper;
 
 public abstract class EmotionRecogniserProvider<ALGO extends Algorithm> implements HasName {
-
+// ...
 	private FacialFeature[]				features;
 	private AbstractDataset<Emotion>	dataset;
 

@@ -6,7 +6,7 @@ public abstract class Constants {
 
 	public static final String	EXPERIMENT_FOLDER	= "c:\\Users\\bencze\\git\\emrec\\experiments\\";
 
-	private static final String	SEPARATOR			= File.pathSeparator;
+	private static final String	SEPARATOR			= File.separator;
 	
 	public static final String	HOME_FOLDER			= "f:" + SEPARATOR + "workspace" + SEPARATOR + "databases" + SEPARATOR;
 	public static final String	ORIGINAL_FOLDER		= "ck+";

@@ -57,7 +57,7 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	@Override
 	public void perform() {
 		final CMAggregator<Emotion> aggregator = new CMAggregator<Emotion>();
-		System.out.println("Performing experiment");
+
 		result = ValidationRunner.run(aggregator, dataset, crossValidator,
 				new ValidationOperation<GroupedDataset<Emotion, ListDataset<FImage>, FImage>, CMResult<Emotion>>() {
 

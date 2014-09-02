@@ -13,7 +13,7 @@ import org.openimaj.experiment.ExperimentRunner;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
-import edu.ubbcluj.emotion.algorithm.pca.KPCA;
+import edu.ubbcluj.emotion.algorithm.fastica.FastICA;
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.annotator.LiblinearAnnotatorProvider;
 import edu.ubbcluj.emotion.crossvalidation.NamedCrossValidator;
@@ -22,7 +22,7 @@ import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.dataset.ck.CKESDDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
-import edu.ubbcluj.emotion.engine.pca.PCAEmotionRecogniserProvider;
+import edu.ubbcluj.emotion.engine.ica.ICAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.Constants;
 import edu.ubbcluj.emotion.util.HasName;
@@ -34,18 +34,19 @@ public class Test {
 
 	public static void main(String[] args) {
 		initLogger();
-		logger.error("test started");
+		logger.debug("test started");
 
-		System.out.println("Creating grouped dataset");
+		logger.debug("Creating grouped dataset");
 		AbstractDataset<Emotion> dataset = new CKESDDataset();
-		NamedCrossValidator<Emotion, FImage> crossValidator = new NamedGroupedLeaveOneOut<>();
-		EmotionRecogniserProvider<KPCA> engine = new PCAEmotionRecogniserProvider(50, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
+		NamedCrossValidator<Emotion, FImage> crossValidator = new NamedGroupedLeaveOneOut<Emotion, FImage>();
+		
+		EmotionRecogniserProvider<FastICA> engine = new ICAEmotionRecogniserProvider(100, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
 		BatchAnnotatorProvider<Emotion> annotatorProvider = new LiblinearAnnotatorProvider<Emotion>();
-
-		System.out.println("Creating benchmark");
+		
+		logger.debug("Creating benchmark");
 		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine, annotatorProvider);
 
-		System.out.println("Running experiment");
+		logger.debug("Running experiment");
 		ExperimentContext experiment = ExperimentRunner.runExperiment(crossValidation);
 		String result = experiment.toString();
 
@@ -67,7 +68,7 @@ public class Test {
 		fa.setName("FileLogger");
 		fa.setFile(Constants.BASE_FOLDER + "information.log");
 		fa.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
-		fa.setThreshold(Level.INFO);
+		fa.setThreshold(Level.DEBUG);
 		fa.setAppend(true);
 		fa.activateOptions();
 
@@ -84,11 +85,11 @@ public class Test {
 		org.apache.log4j.Logger.getRootLogger().addAppender(fa2);
 	}
 
-	public static void writeExperimentResults(String result, HasName... hasNames) {
+	public static void writeExperimentResults(String result, HasName... haveNames) {
 		int i = 0;
 		File file = null;
 		do {
-			String fileName = StringHelper.buildExperimentName(i, hasNames);
+			String fileName = StringHelper.buildExperimentName(i, haveNames);
 			file = new File(Constants.EXPERIMENT_FOLDER + fileName);
 			i++;
 		} while (file.exists());

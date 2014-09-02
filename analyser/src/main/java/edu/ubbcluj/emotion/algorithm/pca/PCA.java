@@ -29,6 +29,7 @@ public class PCA {
 	 *            the given set of vectors
 	 */
 	public PCA(double[][] inVectors) {
+		
 		// calculate the mean along each row
 		meanValues = calcMeanValues(inVectors);
 		// subtract the mean vector from each data vector
