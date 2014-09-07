@@ -4,11 +4,11 @@ import java.io.File;
 
 public abstract class Constants {
 
-	public static final String	EXPERIMENT_FOLDER	= "c:\\Users\\bencze\\git\\emrec\\experiments\\";
+	public static final String	EXPERIMENT_FOLDER	= "c:\\Users\\himamis\\git\\emrec\\experiments\\";
 
 	private static final String	SEPARATOR			= File.separator;
 	
-	public static final String	HOME_FOLDER			= "f:" + SEPARATOR + "workspace" + SEPARATOR + "databases" + SEPARATOR;
+	public static final String	HOME_FOLDER			= "h:" + SEPARATOR + "workspace" + SEPARATOR + "databases" + SEPARATOR;
 	public static final String	ORIGINAL_FOLDER		= "ck+";
 	public static final String	BASE_FOLDER			= HOME_FOLDER + ORIGINAL_FOLDER + SEPARATOR;
 	public static final String	IMAGES_FOLDER		= "cohn-kanade-images" + SEPARATOR;

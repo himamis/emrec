@@ -1,5 +1,8 @@
 package edu.ubbcluj.emotion;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import org.openimaj.data.dataset.GroupedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.ExperimentContext;
@@ -17,8 +20,10 @@ import org.openimaj.experiment.validation.ValidationOperation;
 import org.openimaj.experiment.validation.ValidationRunner;
 import org.openimaj.experiment.validation.cross.CrossValidator;
 import org.openimaj.image.FImage;
+import org.openimaj.util.parallel.GlobalExecutorPool;
 
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
+import edu.ubbcluj.emotion.crossvalidation.cm.MatrixCMResult;
 import edu.ubbcluj.emotion.engine.EmotionRecogniser;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
@@ -41,6 +46,9 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 	@DependentVariable
 	protected AggregatedCMResult<Emotion>											result;
 
+	@DependentVariable
+	protected MatrixCMResult<Emotion>												confusionMatrix;
+
 	public CrossValidationBenchmark(CrossValidator<GroupedDataset<Emotion, ListDataset<FImage>, FImage>> crossValidator,
 			GroupedDataset<Emotion, ListDataset<FImage>, FImage> dataset, EmotionRecogniserProvider<?> engine,
 			BatchAnnotatorProvider<Emotion> annotatorProvider) {
@@ -52,6 +60,8 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 
 	@Override
 	public void setup() {
+		GlobalExecutorPool.getPool().setCorePoolSize(4);
+		GlobalExecutorPool.getPool().setMaximumPoolSize(4);
 	}
 
 	@Override
@@ -74,11 +84,34 @@ public class CrossValidationBenchmark implements RunnableExperiment {
 					}
 
 				});
-
 	}
 
 	@Override
 	public void finish(ExperimentContext context) {
+		doSmth();
+	}
+	
+	private void doSmth() {
+		try {
+			Class<?> clazz = result.getClass();
+			Field field = clazz.getDeclaredField("matrices");
+			field.setAccessible(true);
+			@SuppressWarnings("unchecked")
+			List<CMResult<Emotion>> matrices = (List<CMResult<Emotion>>) field.get(result);
+			confusionMatrix = new MatrixCMResult<>(matrices);
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
