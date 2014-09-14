@@ -1,9 +1,6 @@
 package edu.ubbcluj.emotion.util;
 
-import java.awt.image.BufferedImage;
-
 import org.openimaj.image.FImage;
-import org.openimaj.image.ImageUtilities;
 import org.openimaj.image.processing.face.detection.keypoints.FacialKeypoint;
 import org.openimaj.image.processing.face.detection.keypoints.FacialKeypoint.FacialKeypointType;
 import org.openimaj.image.processing.face.detection.keypoints.KEDetectedFace;
@@ -20,27 +17,12 @@ import edu.ubbcluj.emotion.model.Sequence;
 public class OpenImajUtil {
 
 	public static KEDetectedFace fromSequenceLastImage(Sequence seq) {
-		ImageSequence sequences = seq.getImageSequence();
-		BufferedImage image = sequences.get(sequences.size() - 1).getBufferedImage();
-		LandmarksSequence landmarks = seq.getLandmarksSequence();
-		Landmarks landmarksList = landmarks.get(landmarks.size() - 1);
-		FacialKeypoint[] keypoints = new FacialKeypoint[FacialKeypointType.values().length];
-		int i = 0;
-		for (FacialKeypointType FK : FacialKeypointType.values()) {
-			int[] indices = getFacialKeypointTypeIndices(FK);
-			float[] coords = getMeanCoords(indices, landmarksList);
-			Point2dImpl point = new Point2dImpl(coords[0], coords[1]);
-			FacialKeypoint kp = new FacialKeypoint(FK, point);
-			keypoints[i] = kp;
-			i++;
-		}
-		FImage fimage = ImageUtilities.createFImage(image);
-		return new KEDetectedFace(getBounds(landmarksList), fimage, keypoints, (float) 10.0);
+		return fromSequenceImage(seq, seq.getImageSequence().size() - 1);
 	}
 
 	public static KEDetectedFace fromSequenceImage(Sequence seq, int index) {
 		ImageSequence sequences = seq.getImageSequence();
-		BufferedImage image = sequences.get(index).getBufferedImage();
+		FImage image = sequences.get(index).getImage();
 		LandmarksSequence landmarksSequence = seq.getLandmarksSequence();
 		Landmarks landmarksList = landmarksSequence.get(index);
 		FacialKeypoint[] keypoints = new FacialKeypoint[FacialKeypointType.values().length];
@@ -53,19 +35,16 @@ public class OpenImajUtil {
 			keypoints[i] = kp;
 			i++;
 		}
-		FImage fimage = ImageUtilities.createFImage(image);
-		return new KEDetectedFace(getBounds(landmarksList), fimage, keypoints, (float) 10.0);
+		return new KEDetectedFace(getBounds(landmarksList), image, keypoints, (float) 10.0);
 	}
 	
 	public static KEDetectedFace fromImageAndLandmarks(Image image, Landmarks landmarks) {
-		FacialKeypoint[] keypoints = getFactialKeypoints(landmarks);
-		FImage fimage = image.getFImage();
-		return new KEDetectedFace(getBounds(landmarks), fimage, keypoints, (float) 10.0);
+		return fromImageAndLandmarks(image, landmarks, getBounds(landmarks));
 	}
 	
 	public static KEDetectedFace fromImageAndLandmarks(Image image, Landmarks landmarks, Rectangle bounds) {
 		FacialKeypoint[] keypoints = getFactialKeypoints(landmarks);
-		FImage fimage = image.getFImage();
+		FImage fimage = image.getImage();
 		return new KEDetectedFace(bounds, fimage, keypoints, (float) 10.0);
 	}
 	
@@ -83,6 +62,7 @@ public class OpenImajUtil {
 		return keypoints;
 	}
 
+	@SuppressWarnings("unused")
 	private static int[] getFacialKeypointTypeIndices(FacialKeypointType fkt) {
 		switch (fkt) {
 		case EYE_LEFT_CENTER:

@@ -5,12 +5,10 @@
 	<parent>
 		<groupId>edu.ubbcluj.emotion</groupId>
 		<artifactId>project</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 
-	<groupId>edu.ubbcluj.emotion</groupId>
 	<artifactId>common</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<packaging>bundle</packaging>
 	<name>common</name>

@@ -4,7 +4,7 @@
 	<groupId>edu.ubbcluj.emotion</groupId>
 	<artifactId>project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>project</name>
 	<url>http://maven.apache.org</url>
 	<properties>

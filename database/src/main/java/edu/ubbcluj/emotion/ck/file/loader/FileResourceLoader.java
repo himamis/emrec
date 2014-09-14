@@ -1,9 +1,9 @@
 package edu.ubbcluj.emotion.ck.file.loader;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +31,9 @@ public class FileResourceLoader implements ResourceLoader {
 	}
 
 	@Override
-	public List<BufferedImage> getImages(ImageFilter filter) {
+	public List<FImage> getImages(ImageFilter filter) {
 
-		List<BufferedImage> filteredImages = new ArrayList<>();
+		List<FImage> filteredImages = new ArrayList<>();
 
 		String[] subjects = resourceInfo.getSubjects();
 		for (String subject : subjects) {
@@ -47,7 +47,7 @@ public class FileResourceLoader implements ResourceLoader {
 					boolean isLastImage = i == imageSequence.size() - 1;
 					if (filter.filter(emotion, landmarks, actionUnitList, isLastImage, i)) {
 						logger.debug(subject + " " + sequence + " added");
-						BufferedImage image = imageSequence.get(i).getBufferedImage();
+						FImage image = imageSequence.get(i).getImage();
 						filteredImages.add(image);
 					}
 				}

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.imageio.ImageIO;
+import org.openimaj.image.ImageUtilities;
 
 import com.davidsoergel.conja.Function;
 import com.davidsoergel.conja.Parallel;
@@ -38,7 +38,7 @@ public class FileImageSequenceManager implements ImageSequenceManager {
 			public Void apply(final Integer arg0) {
 				final File f = new File(baseFolder.concat(files[arg0]));
 				try {
-					images[arg0] = new Image(ImageIO.read(f));
+					images[arg0] = new Image(ImageUtilities.readF(f));
 				} catch (final IOException e) {
 					throw new ResourceManagerException("Error loading image file " + f.getName(), e);
 				}
@@ -64,7 +64,7 @@ public class FileImageSequenceManager implements ImageSequenceManager {
 				final Image image = imageSequence.get(arg0);
 				final File f = new File(name.concat(String.format("%08d", arg0 + 1)).concat(Constants.SEQUENCE_FILE));
 				try {
-					ImageIO.write(image.getBufferedImage(), "png", f);
+					ImageUtilities.write(image.getImage(), f);
 				} catch (final Exception e) {
 					throw new ResourceManagerException("Error saving image file " + f.getName(), e);
 				}

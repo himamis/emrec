@@ -1,7 +1,5 @@
 package edu.ubbcluj.emotion.dataset.ck;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +8,6 @@ import org.openimaj.data.dataset.ListBackedDataset;
 import org.openimaj.data.dataset.ListDataset;
 import org.openimaj.experiment.annotations.DatasetDescription;
 import org.openimaj.image.FImage;
-import org.openimaj.image.ImageUtilities;
 import org.openimaj.math.geometry.shape.Rectangle;
 
 import edu.ubbcluj.emotion.ck.file.loader.FileResourceLoaderFactory;
@@ -50,11 +47,7 @@ public abstract class AbstractCKDataset<KEY extends DatasetKey> extends Abstract
 		ResourceLoader resourceLoader = rlf.getResourceLoader(getFolderName());
 
 		for (KEY key : information.getGroups()) {
-			List<FImage> images = new ArrayList<>();
-			List<BufferedImage> bufferedImages = resourceLoader.getImages(getImageFilter(key));
-			for (BufferedImage bufferedImage : bufferedImages) {
-				images.add(ImageUtilities.createFImage(bufferedImage));
-			}
+			List<FImage> images= resourceLoader.getImages(getImageFilter(key));
 			put(key, new ListBackedDataset<FImage>(images));
 		}
 	}

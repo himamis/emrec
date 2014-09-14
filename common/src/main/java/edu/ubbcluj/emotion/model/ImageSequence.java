@@ -1,12 +1,9 @@
 package edu.ubbcluj.emotion.model;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,13 +70,6 @@ public class ImageSequence implements Iterable<Image>, Serializable {
 	@Override
 	public Iterator<Image> iterator() {
 		return images.iterator();
-	}
-
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.writeInt(images.size());
-		for (Image eachImage : images) {
-			ImageIO.write(eachImage.getBufferedImage(), "png", out);
-		}
 	}
 
 }

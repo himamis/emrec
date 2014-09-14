@@ -26,7 +26,7 @@ public class Image implements Serializable {
 	private Long				id;
 
 	@Column(name = "image_data")
-	private int[]				image;
+	private double[]			imageData;
 
 	@Column(name = "width")
 	private int					width;
@@ -35,28 +35,24 @@ public class Image implements Serializable {
 	private int					height;
 
 	@Transient
+	private FImage				image;
+
+	@Transient
 	private BufferedImage		bufferedImage;
 
 	public Image() {
 	}
 
-	public Image(BufferedImage image) {
-		this.bufferedImage = image;
-		this.image = ImageUtilities.createMBFImage(image, true).toPackedARGBPixels();
-		this.width = image.getWidth();
-		this.height = image.getHeight();
+	public Image(FImage image) {
+		setImage(image);
 	}
 
-	public BufferedImage getBufferedImage() {
-		return ImageUtilities.createBufferedImage(new MBFImage(image, width, height, true));
-	}
-	
 	public MBFImage getMBFImage() {
-		return new MBFImage(image, width, height, true);
+		return new MBFImage(image);
 	}
-	
-	public FImage getFImage() {
-		return getMBFImage().flatten();
+
+	public FImage getImage() {
+		return image;
 	}
 
 	public Long getId() {
@@ -67,12 +63,16 @@ public class Image implements Serializable {
 		this.id = id;
 	}
 
-	public int[] getImage() {
-		return image;
+	public double[] getImageData() {
+		return imageData;
 	}
 
-	public void setImage(int[] image) {
+	public void setImage(FImage image) {
 		this.image = image;
+		this.bufferedImage = null;
+		this.imageData = image.getDoublePixelVector();
+		this.width = image.getWidth();
+		this.height = image.getHeight();
 	}
 
 	public int getWidth() {
@@ -90,18 +90,17 @@ public class Image implements Serializable {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
-	public void setBufferedImage(BufferedImage image) {
-		this.bufferedImage = image;
-		this.image = ImageUtilities.createMBFImage(image, true).toPackedARGBPixels();
-		this.width = image.getWidth();
-		this.height = image.getHeight();
+
+	public BufferedImage getBufferedImage() {
+		if (bufferedImage == null) {
+			this.bufferedImage = ImageUtilities.createBufferedImage(image);
+		}
+		return bufferedImage;
 	}
 	
-	public void setFImage(FImage image) {
-		this.width = image.getWidth();
-		this.height = image.getHeight();
-		this.image = image.toPackedARGBPixels();
+	public void fromBufferedImage(BufferedImage img) {
+		FImage fromImg = ImageUtilities.createFImage(img);
+		setImage(fromImg);
 	}
 
 }

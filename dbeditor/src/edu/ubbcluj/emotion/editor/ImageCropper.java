@@ -1,6 +1,6 @@
 package edu.ubbcluj.emotion.editor;
 
-import java.awt.image.BufferedImage;
+import org.openimaj.image.FImage;
 
 import edu.ubbcluj.emotion.model.Image;
 import edu.ubbcluj.emotion.model.Landmarks;
@@ -54,8 +54,8 @@ public class ImageCropper implements SequenceEditor {
 		float miny = this.miny < 0 ? 0 : this.miny;
 		float maxx = this.maxx > image.getWidth() ? image.getWidth() : this.maxx;
 		float maxy = this.maxy > image.getHeight() ? image.getHeight() : this.maxy;
-		BufferedImage editedImage = image.getBufferedImage().getSubimage((int) minx, (int) miny, (int) (maxx - minx), (int) (maxy - miny));
-		image.setBufferedImage(editedImage);
+		FImage croppedImage = image.getImage().extractROI((int) minx, (int) miny, (int) (maxx - minx), (int) (maxy - miny));
+		image.setImage(croppedImage);
 		for (MyPoint2D point : landmarks) {
 			point.setX(point.getX() - minx);
 			point.setY(point.getY() - miny);

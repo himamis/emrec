@@ -13,40 +13,40 @@ import org.openimaj.experiment.ExperimentRunner;
 import org.openimaj.image.FImage;
 import org.slf4j.Logger;
 
-import edu.ubbcluj.emotion.algorithm.fastica.FastICA;
+import edu.ubbcluj.emotion.algorithm.pca.KPCA;
 import edu.ubbcluj.emotion.annotator.BatchAnnotatorProvider;
 import edu.ubbcluj.emotion.annotator.LiblinearAnnotatorProvider;
+import edu.ubbcluj.emotion.crossvalidation.GroupedRandomSplitHalf;
 import edu.ubbcluj.emotion.crossvalidation.NamedCrossValidator;
-import edu.ubbcluj.emotion.crossvalidation.NamedGroupedLeaveOneOut;
 import edu.ubbcluj.emotion.dataset.AbstractDataset;
 import edu.ubbcluj.emotion.dataset.FacialFeature;
 import edu.ubbcluj.emotion.dataset.ck.CKESDDataset;
 import edu.ubbcluj.emotion.engine.EmotionRecogniserProvider;
-import edu.ubbcluj.emotion.engine.ica.ICAEmotionRecogniserProvider;
+import edu.ubbcluj.emotion.engine.pca.PCAEmotionRecogniserProvider;
 import edu.ubbcluj.emotion.model.Emotion;
 import edu.ubbcluj.emotion.util.Constants;
 import edu.ubbcluj.emotion.util.HasName;
 import edu.ubbcluj.emotion.util.StringHelper;
 
-public class Test {
+public class PCATest {
 
-	private static Logger	logger	= org.slf4j.LoggerFactory.getLogger(Test.class);
+	private static Logger	logger	= org.slf4j.LoggerFactory.getLogger(PCATest.class);
 
 	public static void main(String[] args) {
 		initLogger();
 		logger.debug("test started");
 
-		logger.debug("Creating grouped dataset");
+		System.out.println("Creating grouped dataset");
 		AbstractDataset<Emotion> dataset = new CKESDDataset();
-		NamedCrossValidator<Emotion, FImage> crossValidator = new NamedGroupedLeaveOneOut<Emotion, FImage>();
+		NamedCrossValidator<Emotion, FImage> crossValidator = new GroupedRandomSplitHalf<>(50);
 		
-		EmotionRecogniserProvider<FastICA> engine = new ICAEmotionRecogniserProvider(100, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
+		EmotionRecogniserProvider<KPCA> engine = new PCAEmotionRecogniserProvider(30, dataset, FacialFeature.EYES, FacialFeature.MOUTH);
 		BatchAnnotatorProvider<Emotion> annotatorProvider = new LiblinearAnnotatorProvider<Emotion>();
 		
-		logger.debug("Creating benchmark");
+		System.out.println("Creating benchmark");
 		CrossValidationBenchmark crossValidation = new CrossValidationBenchmark(crossValidator, dataset, engine, annotatorProvider);
 
-		logger.debug("Running experiment");
+		System.out.println("Running experiment");
 		ExperimentContext experiment = ExperimentRunner.runExperiment(crossValidation);
 		String result = experiment.toString();
 
@@ -59,7 +59,7 @@ public class Test {
 
 		String PATTERN = "%d [%p|%c|%C{1}] %m%n";
 		console.setLayout(new PatternLayout(PATTERN));
-		console.setThreshold(Level.INFO);
+		console.setThreshold(Level.DEBUG);
 		console.activateOptions();
 
 		org.apache.log4j.Logger.getRootLogger().addAppender(console);

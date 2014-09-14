@@ -2,7 +2,9 @@ package edu.ubbcluj.emotion.editor;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
+
+import org.openimaj.image.FImage;
+import org.openimaj.image.processing.resize.ResizeProcessor;
 
 import edu.ubbcluj.emotion.model.Image;
 import edu.ubbcluj.emotion.model.Landmarks;
@@ -11,12 +13,15 @@ import edu.ubbcluj.emotion.model.Sequence;
 
 public class SequenceResizer implements SequenceEditor {
 
-	private int	width;
-	private int	height;
+	private int				width;
+	private int				height;
+
+	private ResizeProcessor	resizer;
 
 	public SequenceResizer(int width, int height) {
 		this.width = width;
 		this.height = height;
+		resizer = new ResizeProcessor(width, height);
 	}
 
 	@Override
@@ -31,10 +36,12 @@ public class SequenceResizer implements SequenceEditor {
 		double x = (double) width / originalWidth;
 		double y = (double) height / originalHeight;
 		atx.scale(x, y);
+
+		FImage fImage = image.getImage();
+		resizer.processImage(fImage);
+		image.setImage(fImage);
+
 		AffineTransformOp op = new AffineTransformOp(atx, AffineTransformOp.TYPE_BICUBIC);
-		BufferedImage bufferedImage = image.getBufferedImage();
-		BufferedImage resizedImage = op.filter(bufferedImage, null);
-		image.setBufferedImage(resizedImage);
 		if (landmarks != null) {
 			for (MyPoint2D point : landmarks) {
 				java.awt.geom.Point2D.Float dest = new java.awt.geom.Point2D.Float();

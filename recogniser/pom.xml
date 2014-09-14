@@ -5,11 +5,9 @@
 	<parent>
 		<groupId>edu.ubbcluj.emotion</groupId>
 		<artifactId>project</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>edu.ubbcluj.emotion</groupId>
 	<artifactId>recogniser</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<repositories>
 		<repository>
@@ -47,13 +45,13 @@
 		<dependency>
 			<groupId>edu.ubbcluj.emotion</groupId>
 			<artifactId>analyser</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.ubbcluj.emotion</groupId>
 			<artifactId>common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

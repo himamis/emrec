@@ -1,9 +1,10 @@
 package edu.ubbcluj.emotion.database.file.loader;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
+
+import org.openimaj.image.FImage;
 
 public interface ResourceLoader {
 
-	public List<BufferedImage> getImages(ImageFilter filter);
+	public List<FImage> getImages(ImageFilter filter);
 }

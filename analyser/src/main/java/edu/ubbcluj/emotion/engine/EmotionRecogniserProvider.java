@@ -57,6 +57,7 @@ public abstract class EmotionRecogniserProvider<ALGO extends Algorithm> implemen
 			}
 			// create the feature extractor
 			FeatureExtractor<DoubleFV, FImage> featureExtractor = algorithm.getFeatureExtractor();
+			
 			CombinedFeatureExtractor fe = new CombinedFeatureExtractor(facialFeatureExtractor, featureExtractor);
 			fes[i] = fe;
 		}

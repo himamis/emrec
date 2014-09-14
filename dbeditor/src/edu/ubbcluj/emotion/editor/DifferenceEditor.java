@@ -13,26 +13,25 @@ public class DifferenceEditor implements SequenceEditor {
 	@Override
 	public void setUp(Sequence sequence) {
 		Image image = sequence.getImageSequence().get(0);
-		firstImage = image.getFImage();
+		firstImage = image.getImage();
 	}
 
 	@Override
 	public void doEdit(Image image, Landmarks landmarks) {
-		FImage fimage = image.getFImage();
+		FImage fimage = image.getImage();
 		fimage.subtractInplace(firstImage);
 		fimage.normalise();
-		image.setFImage(fimage);
+		image.setImage(fimage);
 	}
 
 	@Override
 	public boolean inputsLandmarks() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean outputsLandmarks() {
 		return true;
 	}
-	
 
 }

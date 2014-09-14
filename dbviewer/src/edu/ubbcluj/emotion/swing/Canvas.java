@@ -107,7 +107,13 @@ public class Canvas extends JPanel {
 			g.drawImage(images.get(i).getBufferedImage(), 0, 0, null);
 			if (landmarks != null) {
 				g.setColor(Color.RED);
+				if (landmarks == null || landmarks.size() == 0) {
+					return;
+				}
 				Landmarks l = landmarks.get(i);
+				if (l == null) {
+					return;
+				}
 				if (showOnly) {
 					MyPoint2D fl = l.get(showIndex);
 					Integer x = ((Float) fl.getX()).intValue();
@@ -145,12 +151,22 @@ public class Canvas extends JPanel {
 
 	public void nextImage() {
 		if (images != null) {
-			if (i < images.size() - 1)
-				i++;
-			else
-				i = 0;
-		} else
+			iterateImages();
+		} else {
 			i = 0;
+		}
+	}
+	
+	private void iterateImages() {
+		if (i < images.size() - 1)
+			i++;
+		else
+			i = 0;
+	}
+	
+	@SuppressWarnings("unused")
+	private void showLastImage() {
+		i = images.size() - 1;
 	}
 
 	private static float[] getMeanCoords(int[] indices, Landmarks landmarks) {

@@ -61,8 +61,8 @@ public class TriangleAligner implements SequenceEditor {
 
 		BufferedImage bufferedImage = image.getBufferedImage();
 		BufferedImage alignedImage = op.filter(bufferedImage, null);
-		image.setBufferedImage(alignedImage);
-		
+		image.fromBufferedImage(alignedImage);
+
 		for (MyPoint2D point : landmarks) {
 			java.awt.geom.Point2D.Float dest = new java.awt.geom.Point2D.Float();
 			op.getPoint2D(point.toPoint2D(), dest);
